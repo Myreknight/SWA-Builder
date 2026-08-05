@@ -1,7 +1,7 @@
 import type { DefenseTokens } from '../types/ship';
 import { DEFENSE_TOKEN_KEYS } from '../types/ship';
 
-const TOKEN_COUNT_OPTIONS = [0, 1, 2, 3];
+const TOKEN_COUNT_OPTIONS = [0, 1, 2, 3, 4];
 
 interface ShipEditorDefenseTokensProps {
   defenseTokens: DefenseTokens;
@@ -11,7 +11,7 @@ interface ShipEditorDefenseTokensProps {
 export function ShipEditorDefenseTokens({ defenseTokens, onUpdateToken }: ShipEditorDefenseTokensProps) {
   return (
     <section className="editor-section">
-      <h3>Defense Tokens</h3>
+      <h3>Defense Tokens (max 4 total)</h3>
       <div className="field-row">
         {DEFENSE_TOKEN_KEYS.map((token) => (
           <label key={token} className="field field--narrow">

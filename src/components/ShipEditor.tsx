@@ -15,6 +15,8 @@ import { ShipEditorUpgradeSlots } from './ShipEditorUpgradeSlots';
 import '../styles/forms.css';
 import './ShipEditor.css';
 
+const MAX_DEFENSE_TOKENS = 4;
+
 interface ShipEditorProps {
   onAdd: (ship: ShipCardData) => void;
 }
@@ -51,10 +53,15 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
   function updateDefenseToken(token: keyof DefenseTokens, count: number) {
     setShip((prev) => {
       const defenseTokens = { ...prev.defenseTokens };
-      if (count === 0) {
+      const otherTotal = Object.entries(defenseTokens).reduce(
+        (sum, [key, value]) => sum + (key === token ? 0 : (value ?? 0)),
+        0,
+      );
+      const clamped = Math.min(count, Math.max(0, MAX_DEFENSE_TOKENS - otherTotal));
+      if (clamped === 0) {
         delete defenseTokens[token];
       } else {
-        defenseTokens[token] = count;
+        defenseTokens[token] = clamped;
       }
       return { ...prev, defenseTokens };
     });
