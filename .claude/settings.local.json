@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "Bash(which node; which npm; which nvm; ls ~/.nvm/versions/node 2>/dev/null; echo \"PATH=$PATH\")",
+      "Read(//usr/local/bin/**)",
+      "Bash(brew list *)",
+      "Bash(npm -v)",
+      "Bash(yes)",
+      "Bash(cd \"/Users/malachykronberg/Documents/SWA Builder\" && mv swa-builder-tmp/.gitignore swa-builder-tmp/.oxlintrc.json . && mv swa-builder-tmp/* . && rmdir swa-builder-tmp && ls -la)",
+      "Bash(npm install *)",
+      "Bash(rm -f src/assets/react.svg src/assets/hero.png public/icons.svg)",
+      "Bash(rmdir src/assets)",
+      "Bash(npx tsc *)",
+      "Bash(npx oxlint *)",
+      "Bash(echo \"tsc exit: $?\")",
+      "Bash(echo \"oxlint exit: $?\")",
+      "Bash(gh auth *)",
+      "Bash(git --version)",
+      "Read(//Users/malachykronberg/**)",
+      "Bash(git config *)",
+      "Bash(brew --version)"
+    ]
+  }
+}

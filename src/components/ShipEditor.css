@@ -1,0 +1,203 @@
+.ship-editor {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.ship-editor__form {
+  flex: 1 1 420px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ship-editor__preview {
+  flex: 0 0 auto;
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ship-editor__preview h3 {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.editor-section {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.editor-section h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  opacity: 0.7;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field span {
+  opacity: 0.75;
+}
+
+.field input,
+.field select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+}
+
+.field--narrow {
+  min-width: 64px;
+}
+
+.field input[type='color'] {
+  padding: 2px;
+  width: 48px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.field-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.field-row .field {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.speed-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.speed-editor__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.speed-editor__row .field {
+  margin-bottom: 0;
+}
+
+.armament-editor {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.armament-editor th,
+.armament-editor td {
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.armament-editor__facing {
+  text-transform: capitalize;
+  text-align: left;
+  opacity: 0.75;
+}
+
+.armament-editor select {
+  font: inherit;
+  padding: 3px 4px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+}
+
+.upgrade-add-select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+}
+
+.upgrade-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.upgrade-list__empty {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.upgrade-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px 3px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.upgrade-chip button {
+  border: none;
+  background: rgba(128, 128, 128, 0.25);
+  color: inherit;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 13px;
+}
+
+.add-ship-button {
+  align-self: flex-start;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent, #aa3bff);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-ship-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

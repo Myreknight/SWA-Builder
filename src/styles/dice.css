@@ -1,0 +1,23 @@
+.die {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.die--red {
+  background: var(--die-red, #b33);
+}
+.die--blue {
+  background: var(--die-blue, #2b6cb0);
+}
+.die--black {
+  background: var(--die-black, #1a1a1a);
+}

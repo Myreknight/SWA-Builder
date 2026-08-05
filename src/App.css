@@ -1,0 +1,95 @@
+.app {
+  min-height: 100vh;
+  padding: 32px 24px 64px;
+  box-sizing: border-box;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app__header h1 {
+  margin: 0 0 4px;
+}
+
+.app__header p {
+  opacity: 0.7;
+}
+
+.app__section {
+  max-width: 1100px;
+  margin: 0 auto 48px;
+}
+
+.app__section h2 {
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+
+.app__gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+.print-section__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.print-section__toolbar button {
+  font: inherit;
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent, #aa3bff);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.print-section__toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.print-pair {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@page {
+  size: letter;
+  margin: 0.4in;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .app {
+    padding: 0;
+  }
+
+  .print-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2in;
+  }
+
+  .print-pair {
+    flex-direction: column;
+    break-inside: avoid;
+    gap: 0.15in;
+  }
+}
