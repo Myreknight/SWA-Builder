@@ -104,15 +104,17 @@ function SpeedChart({ speeds }: { speeds: SpeedSetting[] }) {
         return (
           <div key={s} className="speed-chart__column">
             <span className={`speed-pip${active ? ' active' : ''}`}>{s}</span>
-            <div className="joint-list">
-              {(active ? yaws : [0]).map((yaw, jointIndex) => (
-                <div key={jointIndex} className="yaw-pips">
-                  {Array.from({ length: YAW_PIP_COUNT }, (_, i) => (
-                    <span key={i} className={`yaw-pip${active && i < yaw ? ' filled' : ''}`} />
-                  ))}
-                </div>
-              ))}
-            </div>
+            {active && (
+              <div className="joint-list">
+                {yaws.map((yaw, jointIndex) => (
+                  <div key={jointIndex} className="yaw-pips">
+                    {Array.from({ length: YAW_PIP_COUNT }, (_, i) => (
+                      <span key={i} className={`yaw-pip${i < yaw ? ' filled' : ''}`} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       })}
