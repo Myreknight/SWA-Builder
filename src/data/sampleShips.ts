@@ -38,9 +38,9 @@ export const sampleShips: ShipCardData[] = [
     squadron: 2,
     engineering: 4,
     speed: [
-      { speed: 1, yaw: 2 },
-      { speed: 2, yaw: 1 },
-      { speed: 3, yaw: 1 },
+      { speed: 1, yaws: [2] },
+      { speed: 2, yaws: [2, 1] },
+      { speed: 3, yaws: [1, 1, 0] },
     ],
     shields: { front: 3, left: 2, right: 2, rear: 1 },
     armament: {
@@ -67,9 +67,9 @@ export const sampleShips: ShipCardData[] = [
     squadron: 3,
     engineering: 5,
     speed: [
-      { speed: 1, yaw: 1 },
-      { speed: 2, yaw: 1 },
-      { speed: 3, yaw: 0 },
+      { speed: 1, yaws: [1] },
+      { speed: 2, yaws: [1, 1] },
+      { speed: 3, yaws: [0, 1, 0] },
     ],
     shields: { front: 4, left: 3, right: 3, rear: 2 },
     armament: {
@@ -96,10 +96,10 @@ export const sampleShips: ShipCardData[] = [
     squadron: 3,
     engineering: 4,
     speed: [
-      { speed: 1, yaw: 2 },
-      { speed: 2, yaw: 2 },
-      { speed: 3, yaw: 1 },
-      { speed: 4, yaw: 1 },
+      { speed: 1, yaws: [2] },
+      { speed: 2, yaws: [2, 2] },
+      { speed: 3, yaws: [1, 1, 1] },
+      { speed: 4, yaws: [1, 1, 1] },
     ],
     shields: { front: 3, left: 2, right: 2, rear: 2 },
     armament: {
@@ -126,9 +126,9 @@ export const sampleShips: ShipCardData[] = [
     squadron: 4,
     engineering: 3,
     speed: [
-      { speed: 1, yaw: 2 },
-      { speed: 2, yaw: 1 },
-      { speed: 3, yaw: 0 },
+      { speed: 1, yaws: [2] },
+      { speed: 2, yaws: [1, 1] },
+      { speed: 3, yaws: [0, 1, 0] },
     ],
     shields: { front: 4, left: 2, right: 2, rear: 1 },
     armament: {

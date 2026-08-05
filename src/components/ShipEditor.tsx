@@ -7,7 +7,7 @@ import type {
   ShipSize,
   UpgradeSlot,
 } from '../types/ship';
-import { FACTION_PRESETS } from '../types/ship';
+import { FACTION_PRESETS, jointsForSpeed } from '../types/ship';
 import { createBlankShip } from '../utils/createBlankShip';
 import { ShipBase } from './ShipBase';
 import { ShipCard } from './ShipCard';
@@ -88,14 +88,20 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
       ...prev,
       speed: prev.speed.some((entry) => entry.speed === value)
         ? prev.speed.filter((entry) => entry.speed !== value)
-        : [...prev.speed, { speed: value, yaw: 0 }].sort((a, b) => a.speed - b.speed),
+        : [...prev.speed, { speed: value, yaws: Array(jointsForSpeed(value)).fill(0) }].sort(
+            (a, b) => a.speed - b.speed,
+          ),
     }));
   }
 
-  function updateYaw(value: number, yaw: number) {
+  function updateYaw(value: number, jointIndex: number, yaw: number) {
     setShip((prev) => ({
       ...prev,
-      speed: prev.speed.map((entry) => (entry.speed === value ? { ...entry, yaw } : entry)),
+      speed: prev.speed.map((entry) =>
+        entry.speed === value
+          ? { ...entry, yaws: entry.yaws.map((y, i) => (i === jointIndex ? yaw : y)) }
+          : entry,
+      ),
     }));
   }
 
@@ -267,16 +273,20 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
                     <span>Speed {s}</span>
                   </label>
                   {active && (
-                    <label className="field field--narrow">
-                      <span>Yaw</span>
-                      <select value={entry.yaw} onChange={(e) => updateYaw(s, Number(e.target.value))}>
-                        {YAW_OPTIONS.map((n) => (
-                          <option key={n} value={n}>
-                            {n}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
+                    <div className="joint-editor">
+                      {entry.yaws.map((yaw, jointIndex) => (
+                        <label key={jointIndex} className="field field--narrow">
+                          <span>Yaw {jointIndex + 1}</span>
+                          <select value={yaw} onChange={(e) => updateYaw(s, jointIndex, Number(e.target.value))}>
+                            {YAW_OPTIONS.map((n) => (
+                              <option key={n} value={n}>
+                                {n}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      ))}
+                    </div>
                   )}
                 </div>
               );

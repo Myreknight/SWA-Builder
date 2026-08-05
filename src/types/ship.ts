@@ -34,10 +34,16 @@ export interface DefenseTokens {
   salvo?: number;
 }
 
-// One entry per speed the ship can use; yaw is the pip count (0-3) at that speed.
+// One entry per speed the ship can use. `yaws` holds one 0-3 pip value per
+// maneuver-tool joint at that speed (Speed 1 = 1 joint, Speed 2 = 2 joints,
+// Speed 3+ = 3 joints, matching the physical tool's max of 3 joints).
 export interface SpeedSetting {
   speed: number; // 1-4
-  yaw: number; // 0-3, shown as pips
+  yaws: number[]; // one entry per joint, each 0-3, shown as pips
+}
+
+export function jointsForSpeed(speed: number): number {
+  return Math.min(speed, 3);
 }
 
 export type UpgradeSlot =

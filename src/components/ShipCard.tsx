@@ -94,19 +94,23 @@ export function ShipCard({ ship }: ShipCardProps) {
 }
 
 function SpeedChart({ speeds }: { speeds: SpeedSetting[] }) {
-  const bySpeed = new Map(speeds.map((entry) => [entry.speed, entry.yaw]));
+  const bySpeed = new Map(speeds.map((entry) => [entry.speed, entry.yaws]));
 
   return (
     <div className="speed-chart" aria-label="Speed and yaw chart">
       {ALL_SPEEDS.map((s) => {
-        const yaw = bySpeed.get(s);
-        const active = yaw !== undefined;
+        const yaws = bySpeed.get(s);
+        const active = yaws !== undefined;
         return (
           <div key={s} className="speed-chart__column">
             <span className={`speed-pip${active ? ' active' : ''}`}>{s}</span>
-            <div className="yaw-pips">
-              {Array.from({ length: YAW_PIP_COUNT }, (_, i) => (
-                <span key={i} className={`yaw-pip${active && i < yaw ? ' filled' : ''}`} />
+            <div className="joint-list">
+              {(active ? yaws : [0]).map((yaw, jointIndex) => (
+                <div key={jointIndex} className="yaw-pips">
+                  {Array.from({ length: YAW_PIP_COUNT }, (_, i) => (
+                    <span key={i} className={`yaw-pip${active && i < yaw ? ' filled' : ''}`} />
+                  ))}
+                </div>
               ))}
             </div>
           </div>

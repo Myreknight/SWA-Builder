@@ -115,6 +115,12 @@
   margin-bottom: 0;
 }
 
+.joint-editor {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .armament-editor {
   width: 100%;
   border-collapse: collapse;
