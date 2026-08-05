@@ -2,8 +2,10 @@ import type { CSSProperties } from 'react';
 import type { DiceCount } from '../types/ship';
 import type { KeywordDefinition, SquadronCardData } from '../types/squadron';
 import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
+import { DefenseTokenChips } from './DefenseTokenChips';
 import { Stat } from './Stat';
 import '../styles/dice.css';
+import '../styles/tokenBadge.css';
 import './SquadronCard.css';
 
 interface SquadronCardProps {
@@ -12,9 +14,14 @@ interface SquadronCardProps {
 }
 
 export function SquadronCard({ squadron, keywords }: SquadronCardProps) {
-  const keywordNames = squadron.keywordIds
-    .map((id) => keywords.find((k) => k.id === id)?.name)
-    .filter((name): name is string => Boolean(name));
+  const keywordChips = squadron.keywords
+    .map((assignment) => {
+      const def = keywords.find((k) => k.id === assignment.keywordId);
+      if (!def) return null;
+      const label = def.hasValue ? `${def.name} ${assignment.value ?? 1}` : def.name;
+      return { id: assignment.keywordId, label };
+    })
+    .filter((chip): chip is { id: string; label: string } => chip !== null);
 
   return (
     <div
@@ -29,7 +36,10 @@ export function SquadronCard({ squadron, keywords }: SquadronCardProps) {
 
       <header className="squadron-card__header">
         <div className="squadron-card__title">
-          <h2>{squadron.name}</h2>
+          <h2>
+            {squadron.unique && <span className="squadron-card__unique">&#9670;</span>}
+            {squadron.name}
+          </h2>
           <span className="squadron-card__subtitle">{squadron.faction}</span>
         </div>
         <div className="squadron-card__points" title="Point cost">
@@ -44,13 +54,17 @@ export function SquadronCard({ squadron, keywords }: SquadronCardProps) {
         <DiceStat label="Anti-Ship" dice={squadron.antiShipArmament} />
       </div>
 
+      <div className="squadron-card__tokens">
+        <DefenseTokenChips defenseTokens={squadron.defenseTokens} />
+      </div>
+
       <div className="squadron-card__keywords">
-        {keywordNames.length === 0 ? (
-          <span className="squadron-card__none">No keywords</span>
+        {keywordChips.length === 0 ? (
+          <span className="chip-row__empty">No keywords</span>
         ) : (
-          keywordNames.map((name) => (
-            <span key={name} className="keyword-chip">
-              {name}
+          keywordChips.map((chip) => (
+            <span key={chip.id} className="keyword-chip">
+              {chip.label}
             </span>
           ))
         )}
@@ -65,7 +79,7 @@ function DiceStat({ label, dice }: { label: string; dice: DiceCount }) {
   return (
     <div className="stat squadron-card__dice-stat">
       {entries.length === 0 ? (
-        <span className="squadron-card__none">&mdash;</span>
+        <span className="chip-row__empty">&mdash;</span>
       ) : (
         <div className="squadron-card__dice">
           {entries.map(([color, count]) => (

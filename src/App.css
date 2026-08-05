@@ -17,6 +17,38 @@
   opacity: 0.7;
 }
 
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tab-nav__link {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.tab-nav__link.active {
+  color: var(--text-h);
+  border-bottom-color: var(--accent, #aa3bff);
+  opacity: 1;
+}
+
+.tab-panel--hidden {
+  display: none;
+}
+
 .app__section {
   max-width: 1100px;
   margin: 0 auto 48px;

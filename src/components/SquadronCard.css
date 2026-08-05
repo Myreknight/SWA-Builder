@@ -1,6 +1,6 @@
 .squadron-card {
   --card-width: 4.75in;
-  --card-height: 1.95in;
+  --card-height: 2.25in;
   --accent-color: #888888;
   --accent-color-dark: color-mix(in srgb, var(--accent-color) 45%, black);
 
@@ -38,6 +38,7 @@
 
 .squadron-card__header,
 .squadron-card__body,
+.squadron-card__tokens,
 .squadron-card__keywords {
   position: relative;
   z-index: 1;
@@ -55,6 +56,12 @@
   font-size: 15px;
   line-height: 1.15;
   letter-spacing: 0.2px;
+}
+
+.squadron-card__unique {
+  color: var(--accent-color);
+  margin-right: 4px;
+  font-size: 11px;
 }
 
 .squadron-card__subtitle {
@@ -92,6 +99,14 @@
   gap: 3px;
 }
 
+.squadron-card__tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  padding: 0 10px;
+}
+
 .squadron-card__keywords {
   display: flex;
   flex-wrap: wrap;
@@ -107,13 +122,6 @@
   border-radius: 10px;
   background: var(--accent-color-dark);
   border: 1px solid var(--accent-color);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.squadron-card__none {
-  font-size: 8px;
-  opacity: 0.5;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }

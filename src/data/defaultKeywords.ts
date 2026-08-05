@@ -22,9 +22,9 @@ export const DEFAULT_KEYWORDS: KeywordDefinition[] = [
   },
   {
     id: 'counter',
-    name: 'Counter X',
-    description:
-      "After being attacked by a squadron and surviving, this squadron's attacker suffers X damage.",
+    name: 'Counter',
+    hasValue: true,
+    description: "After being attacked by a squadron and surviving, this squadron's attacker suffers this much damage.",
   },
   {
     id: 'grit',
@@ -38,13 +38,16 @@ export const DEFAULT_KEYWORDS: KeywordDefinition[] = [
   },
   {
     id: 'intel',
-    name: 'Intel X',
-    description: 'While attacking, the defender may not spend more than X of their defense tokens.',
+    name: 'Intel',
+    hasValue: true,
+    description: 'While attacking, the defender may not spend more defense tokens than this value.',
   },
   {
     id: 'relay',
-    name: 'Relay X',
-    description: 'At the start of the squadron phase, this squadron may give an order to X friendly squadrons at distance 1.',
+    name: 'Relay',
+    hasValue: true,
+    description:
+      'At the start of the squadron phase, this squadron may give an order to this many friendly squadrons at distance 1.',
   },
   {
     id: 'rogue',
@@ -58,8 +61,9 @@ export const DEFAULT_KEYWORDS: KeywordDefinition[] = [
   },
   {
     id: 'snipe',
-    name: 'Snipe X',
-    description: "While attacking a ship at long range, this squadron's attack pool gains X additional die.",
+    name: 'Snipe',
+    hasValue: true,
+    description: "While attacking a ship at long range, this squadron's attack pool gains this many additional dice.",
   },
   {
     id: 'swarm',

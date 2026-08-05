@@ -35,6 +35,8 @@ export interface DefenseTokens {
   salvo?: number;
 }
 
+export const DEFENSE_TOKEN_KEYS: (keyof DefenseTokens)[] = ['redirect', 'evade', 'brace', 'contain', 'salvo'];
+
 // One entry per speed the ship can use. `yaws` holds one 0-3 pip value per
 // maneuver-tool joint at that speed (Speed 1 = 1 joint, Speed 2 = 2 joints,
 // Speed 3 = 3 joints, Speed 4 = 4 joints).

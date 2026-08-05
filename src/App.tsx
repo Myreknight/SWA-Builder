@@ -16,7 +16,16 @@ import { loadCustomSquadrons, saveCustomSquadrons } from './utils/customSquadron
 import { loadKeywords, saveKeywords } from './utils/keywordLibraryStorage';
 import './App.css';
 
+type Tab = 'ships' | 'squadrons' | 'keywords';
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'ships', label: 'Ships' },
+  { id: 'squadrons', label: 'Squadrons' },
+  { id: 'keywords', label: 'Keywords' },
+];
+
 function App() {
+  const [activeTab, setActiveTab] = useState<Tab>('ships');
   const [customShips, setCustomShips] = useState<ShipCardData[]>(loadCustomShips);
   const [customSquadrons, setCustomSquadrons] = useState<SquadronCardData[]>(loadCustomSquadrons);
   const [keywords, setKeywords] = useState<KeywordDefinition[]>(loadKeywords);
@@ -67,7 +76,9 @@ function App() {
 
   function removeKeyword(id: string) {
     setKeywords((prev) => prev.filter((k) => k.id !== id));
-    setCustomSquadrons((prev) => prev.map((s) => ({ ...s, keywordIds: s.keywordIds.filter((k) => k !== id) })));
+    setCustomSquadrons((prev) =>
+      prev.map((s) => ({ ...s, keywords: s.keywords.filter((k) => k.keywordId !== id) })),
+    );
   }
 
   const printCount = printQueueShips.length + printQueueSquadrons.length;
@@ -79,92 +90,111 @@ function App() {
         <p>Custom Star Wars: Armada ship and squadron card preview</p>
       </header>
 
-      <section className="app__section no-print">
-        <h2>Keyword Library</h2>
-        <KeywordLibraryEditor
-          keywords={keywords}
-          onAdd={addKeyword}
-          onUpdate={updateKeyword}
-          onRemove={removeKeyword}
-        />
-      </section>
+      <nav className="tab-nav no-print">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            className={`tab-nav__link${activeTab === tab.id ? ' active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </nav>
 
-      <section className="app__section no-print">
-        <h2>Build a Ship</h2>
-        <ShipEditor onAdd={(ship) => setCustomShips((prev) => [...prev, ship])} />
-      </section>
-
-      {customShips.length > 0 && (
+      <div className={`tab-panel${activeTab === 'ships' ? '' : ' tab-panel--hidden'}`}>
         <section className="app__section no-print">
-          <h2>Your Ships</h2>
+          <h2>Build a Ship</h2>
+          <ShipEditor onAdd={(ship) => setCustomShips((prev) => [...prev, ship])} />
+        </section>
+
+        {customShips.length > 0 && (
+          <section className="app__section no-print">
+            <h2>Your Ships</h2>
+            <div className="app__gallery">
+              {customShips.map((ship) => (
+                <ShipTile
+                  key={ship.id}
+                  ship={ship}
+                  inQueue={printQueueShips.some((s) => s.id === ship.id)}
+                  onTogglePrint={() => toggleShipPrint(ship)}
+                  onRemove={() => removeCustomShip(ship.id)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="app__section no-print">
+          <h2>Sample Ships</h2>
           <div className="app__gallery">
-            {customShips.map((ship) => (
+            {sampleShips.map((ship) => (
               <ShipTile
                 key={ship.id}
                 ship={ship}
                 inQueue={printQueueShips.some((s) => s.id === ship.id)}
                 onTogglePrint={() => toggleShipPrint(ship)}
-                onRemove={() => removeCustomShip(ship.id)}
               />
             ))}
           </div>
         </section>
-      )}
+      </div>
 
-      <section className="app__section no-print">
-        <h2>Sample Ships</h2>
-        <div className="app__gallery">
-          {sampleShips.map((ship) => (
-            <ShipTile
-              key={ship.id}
-              ship={ship}
-              inQueue={printQueueShips.some((s) => s.id === ship.id)}
-              onTogglePrint={() => toggleShipPrint(ship)}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="app__section no-print">
-        <h2>Build a Squadron</h2>
-        <SquadronEditor
-          keywordLibrary={keywords}
-          onAdd={(squadron) => setCustomSquadrons((prev) => [...prev, squadron])}
-        />
-      </section>
-
-      {customSquadrons.length > 0 && (
+      <div className={`tab-panel${activeTab === 'squadrons' ? '' : ' tab-panel--hidden'}`}>
         <section className="app__section no-print">
-          <h2>Your Squadrons</h2>
+          <h2>Build a Squadron</h2>
+          <SquadronEditor
+            keywordLibrary={keywords}
+            onAdd={(squadron) => setCustomSquadrons((prev) => [...prev, squadron])}
+          />
+        </section>
+
+        {customSquadrons.length > 0 && (
+          <section className="app__section no-print">
+            <h2>Your Squadrons</h2>
+            <div className="app__gallery">
+              {customSquadrons.map((squadron) => (
+                <SquadronTile
+                  key={squadron.id}
+                  squadron={squadron}
+                  keywords={keywords}
+                  inQueue={printQueueSquadrons.some((s) => s.id === squadron.id)}
+                  onTogglePrint={() => toggleSquadronPrint(squadron)}
+                  onRemove={() => removeCustomSquadron(squadron.id)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="app__section no-print">
+          <h2>Sample Squadrons</h2>
           <div className="app__gallery">
-            {customSquadrons.map((squadron) => (
+            {sampleSquadrons.map((squadron) => (
               <SquadronTile
                 key={squadron.id}
                 squadron={squadron}
                 keywords={keywords}
                 inQueue={printQueueSquadrons.some((s) => s.id === squadron.id)}
                 onTogglePrint={() => toggleSquadronPrint(squadron)}
-                onRemove={() => removeCustomSquadron(squadron.id)}
               />
             ))}
           </div>
         </section>
-      )}
+      </div>
 
-      <section className="app__section no-print">
-        <h2>Sample Squadrons</h2>
-        <div className="app__gallery">
-          {sampleSquadrons.map((squadron) => (
-            <SquadronTile
-              key={squadron.id}
-              squadron={squadron}
-              keywords={keywords}
-              inQueue={printQueueSquadrons.some((s) => s.id === squadron.id)}
-              onTogglePrint={() => toggleSquadronPrint(squadron)}
-            />
-          ))}
-        </div>
-      </section>
+      <div className={`tab-panel${activeTab === 'keywords' ? '' : ' tab-panel--hidden'}`}>
+        <section className="app__section no-print">
+          <h2>Keyword Library</h2>
+          <KeywordLibraryEditor
+            keywords={keywords}
+            onAdd={addKeyword}
+            onUpdate={updateKeyword}
+            onRemove={removeKeyword}
+          />
+        </section>
+      </div>
 
       <section className="app__section print-section">
         <div className="print-section__toolbar no-print">

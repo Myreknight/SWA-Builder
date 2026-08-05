@@ -24,6 +24,10 @@ export function SquadronEditorBasicInfo({ squadron, update }: SquadronEditorBasi
         <span>Name</span>
         <input value={squadron.name} onChange={(e) => update('name', e.target.value)} placeholder="Squadron name" />
       </label>
+      <label className="checkbox">
+        <input type="checkbox" checked={squadron.unique} onChange={(e) => update('unique', e.target.checked)} />
+        <span>Unique</span>
+      </label>
       <div className="field-row">
         <label className="field">
           <span>Faction</span>

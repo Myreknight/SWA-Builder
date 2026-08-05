@@ -26,14 +26,30 @@
   border-style: dashed;
 }
 
+.keyword-row__name-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.keyword-row__has-value {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  opacity: 0.75;
+}
+
 .keyword-row__name {
   font: inherit;
   font-weight: 600;
+  width: 100%;
   padding: 6px 8px;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-h);
+  box-sizing: border-box;
 }
 
 .keyword-row__description {

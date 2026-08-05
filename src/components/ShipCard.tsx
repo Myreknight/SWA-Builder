@@ -1,18 +1,11 @@
 import type { CSSProperties } from 'react';
-import type { AntiSquadronArmament, DiceCount, DefenseTokens, Facing, ShipCardData, SpeedSetting } from '../types/ship';
+import type { AntiSquadronArmament, DiceCount, Facing, ShipCardData, SpeedSetting } from '../types/ship';
 import { ALL_SPEEDS, FACING_ORDER } from '../types/ship';
 import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
+import { DefenseTokenChips } from './DefenseTokenChips';
 import { Stat } from './Stat';
 import '../styles/dice.css';
 import './ShipCard.css';
-
-const DEFENSE_TOKEN_LABELS: Record<keyof DefenseTokens, string> = {
-  redirect: 'Redirect',
-  evade: 'Evade',
-  brace: 'Brace',
-  contain: 'Contain',
-  salvo: 'Salvo',
-};
 
 const FACING_LABEL: Record<Facing, string> = {
   front: 'Front',
@@ -28,10 +21,6 @@ interface ShipCardProps {
 }
 
 export function ShipCard({ ship }: ShipCardProps) {
-  const activeTokens = (Object.entries(ship.defenseTokens) as [keyof DefenseTokens, number | undefined][]).filter(
-    ([, count]) => (count ?? 0) > 0,
-  );
-
   return (
     <div className="ship-card" style={{ '--accent-color': ship.accentColor || '#888888' } as CSSProperties}>
       <div
@@ -67,16 +56,7 @@ export function ShipCard({ ship }: ShipCardProps) {
           </div>
 
           <div className="ship-card__tokens">
-            {activeTokens.length === 0 ? (
-              <span className="ship-card__none">No defense tokens</span>
-            ) : (
-              activeTokens.map(([token, count]) => (
-                <span key={token} className={`token token--${token}`}>
-                  {DEFENSE_TOKEN_LABELS[token]}
-                  {(count ?? 0) > 1 ? ` x${count}` : ''}
-                </span>
-              ))
-            )}
+            <DefenseTokenChips defenseTokens={ship.defenseTokens} />
           </div>
         </div>
       </div>
