@@ -1,21 +1,20 @@
-import type { ShipCardData } from '../types/ship';
-import { ShipBase } from './ShipBase';
-import { ShipCard } from './ShipCard';
+import type { KeywordDefinition, SquadronCardData } from '../types/squadron';
+import { SquadronCard } from './SquadronCard';
 import '../styles/tile.css';
 
-interface ShipTileProps {
-  ship: ShipCardData;
+interface SquadronTileProps {
+  squadron: SquadronCardData;
+  keywords: KeywordDefinition[];
   inQueue: boolean;
   onTogglePrint: () => void;
   onRemove?: () => void;
 }
 
-export function ShipTile({ ship, inQueue, onTogglePrint, onRemove }: ShipTileProps) {
+export function SquadronTile({ squadron, keywords, inQueue, onTogglePrint, onRemove }: SquadronTileProps) {
   return (
     <div className="tile">
       <div className="tile__outputs">
-        <ShipCard ship={ship} />
-        <ShipBase ship={ship} />
+        <SquadronCard squadron={squadron} keywords={keywords} />
       </div>
       <div className="tile__actions">
         <button type="button" className={`tile__print-toggle${inQueue ? ' active' : ''}`} onClick={onTogglePrint}>

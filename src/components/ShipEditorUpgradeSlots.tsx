@@ -12,7 +12,7 @@ export function ShipEditorUpgradeSlots({ upgradeSlots, onAddSlot, onRemoveSlot }
     <section className="editor-section">
       <h3>Upgrade Slots</h3>
       <select
-        className="upgrade-add-select"
+        className="add-select"
         value=""
         onChange={(e) => {
           if (e.target.value) onAddSlot(e.target.value as UpgradeSlot);
@@ -28,10 +28,10 @@ export function ShipEditorUpgradeSlots({ upgradeSlots, onAddSlot, onRemoveSlot }
           </option>
         ))}
       </select>
-      <div className="upgrade-list">
-        {upgradeSlots.length === 0 && <span className="upgrade-list__empty">No upgrade slots added</span>}
+      <div className="chip-list">
+        {upgradeSlots.length === 0 && <span className="chip-list__empty">No upgrade slots added</span>}
         {upgradeSlots.map((slot, i) => (
-          <span key={`${slot}-${i}`} className="upgrade-chip">
+          <span key={`${slot}-${i}`} className="chip">
             {slot}
             <button type="button" onClick={() => onRemoveSlot(i)} aria-label={`Remove ${slot}`}>
               &times;

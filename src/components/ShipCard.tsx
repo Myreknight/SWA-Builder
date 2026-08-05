@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import type { AntiSquadronArmament, DiceCount, DefenseTokens, Facing, ShipCardData, SpeedSetting } from '../types/ship';
 import { ALL_SPEEDS, FACING_ORDER } from '../types/ship';
 import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
+import { Stat } from './Stat';
 import '../styles/dice.css';
 import './ShipCard.css';
 
@@ -118,15 +119,6 @@ function SpeedChart({ speeds }: { speeds: SpeedSetting[] }) {
           </div>
         );
       })}
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="stat">
-      <span className="stat__value">{value}</span>
-      <span className="stat__label">{label}</span>
     </div>
   );
 }

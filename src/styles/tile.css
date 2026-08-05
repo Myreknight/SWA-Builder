@@ -1,11 +1,11 @@
-.ship-tile {
+.tile {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.ship-tile__outputs {
+.tile__outputs {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -13,13 +13,13 @@
   justify-content: center;
 }
 
-.ship-tile__actions {
+.tile__actions {
   display: flex;
   gap: 8px;
 }
 
-.ship-tile__print-toggle,
-.ship-tile__remove {
+.tile__print-toggle,
+.tile__remove {
   font: inherit;
   font-size: 12px;
   padding: 6px 12px;
@@ -30,13 +30,13 @@
   cursor: pointer;
 }
 
-.ship-tile__print-toggle.active {
+.tile__print-toggle.active {
   background: var(--accent, #aa3bff);
   border-color: var(--accent, #aa3bff);
   color: #fff;
 }
 
-.ship-tile__remove {
+.tile__remove {
   color: #c0392b;
   border-color: #c0392b;
 }

@@ -12,6 +12,7 @@ import { ShipEditorDefenseTokens } from './ShipEditorDefenseTokens';
 import { ShipEditorShields } from './ShipEditorShields';
 import { ShipEditorSpeedYaw } from './ShipEditorSpeedYaw';
 import { ShipEditorUpgradeSlots } from './ShipEditorUpgradeSlots';
+import '../styles/forms.css';
 import './ShipEditor.css';
 
 interface ShipEditorProps {
@@ -95,8 +96,8 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
   }
 
   return (
-    <div className="ship-editor">
-      <div className="ship-editor__form">
+    <div className="card-editor">
+      <div className="card-editor__form">
         <ShipEditorBasicInfo ship={ship} update={update} />
         <ShipEditorCoreStats ship={ship} update={update} />
         <ShipEditorSpeedYaw speed={ship.speed} onToggleSpeed={toggleSpeed} onUpdateYaw={updateYaw} />
@@ -114,12 +115,12 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
           onRemoveSlot={removeUpgradeSlot}
         />
 
-        <button type="button" className="add-ship-button" onClick={handleAdd} disabled={!ship.name}>
+        <button type="button" className="add-item-button" onClick={handleAdd} disabled={!ship.name}>
           Add Ship to Gallery
         </button>
       </div>
 
-      <div className="ship-editor__preview">
+      <div className="card-editor__preview">
         <h3>Live Preview</h3>
         <ShipCard ship={ship} />
         <ShipBase ship={ship} />
