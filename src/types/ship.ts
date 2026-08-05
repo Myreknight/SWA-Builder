@@ -4,6 +4,7 @@ export const FACTION_PRESETS: string[] = ['Rebel', 'Empire', 'Republic', 'Separa
 
 export type ShipSize = 'Flotilla' | 'Small' | 'Medium' | 'Large' | 'Huge';
 export type Facing = 'front' | 'left' | 'right' | 'rear';
+export const FACING_ORDER: Facing[] = ['front', 'left', 'right', 'rear'];
 export type DiceColor = 'red' | 'blue' | 'black';
 
 export interface ShieldValues {
@@ -46,6 +47,8 @@ export function jointsForSpeed(speed: number): number {
   return speed;
 }
 
+export const ALL_SPEEDS = [1, 2, 3, 4] as const;
+
 export type UpgradeSlot =
   | 'Commander'
   | 'Officer'
@@ -59,6 +62,21 @@ export type UpgradeSlot =
   | 'Ordnance'
   | 'Boarding Team'
   | 'Title';
+
+export const UPGRADE_SLOT_OPTIONS: UpgradeSlot[] = [
+  'Commander',
+  'Officer',
+  'Weapons Team',
+  'Offensive Retrofit',
+  'Defensive Retrofit',
+  'Fleet Command',
+  'Fleet Support',
+  'Turbolaser',
+  'Ion Cannon',
+  'Ordnance',
+  'Boarding Team',
+  'Title',
+];
 
 export interface ShipCardData {
   id: string;

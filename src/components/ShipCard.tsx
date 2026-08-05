@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { AntiSquadronArmament, DiceCount, DefenseTokens, Facing, ShipCardData, SpeedSetting } from '../types/ship';
+import { ALL_SPEEDS, FACING_ORDER } from '../types/ship';
 import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
 import '../styles/dice.css';
 import './ShipCard.css';
@@ -19,9 +20,6 @@ const FACING_LABEL: Record<Facing, string> = {
   rear: 'Rear',
 };
 
-const FACING_ORDER: Facing[] = ['front', 'left', 'right', 'rear'];
-
-const ALL_SPEEDS = [1, 2, 3, 4] as const;
 const YAW_PIP_COUNT = 3;
 
 interface ShipCardProps {
