@@ -1,6 +1,6 @@
 .ship-card {
   --card-width: 4.75in;
-  --card-height: 3.9in;
+  --card-height: 3.98in;
   --accent-color: #888888;
   --accent-color-dark: color-mix(in srgb, var(--accent-color) 45%, black);
 

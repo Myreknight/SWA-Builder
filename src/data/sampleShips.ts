@@ -99,7 +99,7 @@ export const sampleShips: ShipCardData[] = [
       { speed: 1, yaws: [2] },
       { speed: 2, yaws: [2, 2] },
       { speed: 3, yaws: [1, 1, 1] },
-      { speed: 4, yaws: [1, 1, 1] },
+      { speed: 4, yaws: [1, 1, 1, 0] },
     ],
     shields: { front: 3, left: 2, right: 2, rear: 2 },
     armament: {
