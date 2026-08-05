@@ -59,28 +59,30 @@ export function ShipCard({ ship }: ShipCardProps) {
           <ArmamentTable armament={ship.armament} />
         </div>
 
-        <div className="ship-card__stats">
-          <Stat label="Command" value={ship.command} />
-          <Stat label="Squadron" value={ship.squadron} />
-          <Stat label="Engineering" value={ship.engineering} />
-          <AntiSquadronStat armament={ship.antiSquadronArmament} />
+        <div className="ship-card__right">
+          <div className="ship-card__stats">
+            <Stat label="Command" value={ship.command} />
+            <Stat label="Squadron" value={ship.squadron} />
+            <Stat label="Engineering" value={ship.engineering} />
+            <AntiSquadronStat armament={ship.antiSquadronArmament} />
+          </div>
+
+          <div className="ship-card__tokens">
+            {activeTokens.length === 0 ? (
+              <span className="ship-card__none">No defense tokens</span>
+            ) : (
+              activeTokens.map(([token, count]) => (
+                <span key={token} className={`token token--${token}`}>
+                  {DEFENSE_TOKEN_LABELS[token]}
+                  {(count ?? 0) > 1 ? ` x${count}` : ''}
+                </span>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
       <SpeedChart speeds={ship.speed} />
-
-      <div className="ship-card__tokens">
-        {activeTokens.length === 0 ? (
-          <span className="ship-card__none">No defense tokens</span>
-        ) : (
-          activeTokens.map(([token, count]) => (
-            <span key={token} className={`token token--${token}`}>
-              {DEFENSE_TOKEN_LABELS[token]}
-              {(count ?? 0) > 1 ? ` x${count}` : ''}
-            </span>
-          ))
-        )}
-      </div>
 
       <footer className="ship-card__upgrades">
         {ship.upgradeSlots.map((slot, i) => (
