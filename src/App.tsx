@@ -7,22 +7,29 @@ import { ShipTile } from './components/ShipTile';
 import { SquadronCard } from './components/SquadronCard';
 import { SquadronEditor } from './components/SquadronEditor';
 import { SquadronTile } from './components/SquadronTile';
+import { UpgradeCardEditor } from './components/UpgradeCardEditor';
+import { UpgradeCardPreview } from './components/UpgradeCardPreview';
+import { UpgradeCardTile } from './components/UpgradeCardTile';
 import { UpgradeSlotLibraryEditor } from './components/UpgradeSlotLibraryEditor';
 import { sampleShips } from './data/sampleShips';
 import { sampleSquadrons } from './data/sampleSquadrons';
+import { sampleUpgradeCards } from './data/sampleUpgradeCards';
 import type { ShipCardData, UpgradeSlotDefinition } from './types/ship';
 import type { KeywordDefinition, SquadronCardData } from './types/squadron';
+import type { UpgradeCardData } from './types/upgrade';
 import { loadCustomShips, saveCustomShips } from './utils/customShipsStorage';
 import { loadCustomSquadrons, saveCustomSquadrons } from './utils/customSquadronsStorage';
+import { loadCustomUpgradeCards, saveCustomUpgradeCards } from './utils/customUpgradeCardsStorage';
 import { loadKeywords, saveKeywords } from './utils/keywordLibraryStorage';
 import { loadUpgradeSlots, saveUpgradeSlots } from './utils/upgradeSlotLibraryStorage';
 import './App.css';
 
-type Tab = 'ships' | 'upgrades' | 'squadrons' | 'keywords';
+type Tab = 'ships' | 'upgradeTypes' | 'upgradeCards' | 'squadrons' | 'keywords';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'ships', label: 'Ships' },
-  { id: 'upgrades', label: 'Upgrades' },
+  { id: 'upgradeTypes', label: 'Upgrade Types' },
+  { id: 'upgradeCards', label: 'Upgrade Cards' },
   { id: 'squadrons', label: 'Squadrons' },
   { id: 'keywords', label: 'Keywords' },
 ];
@@ -31,10 +38,12 @@ function App() {
   const [activeTab, setActiveTab] = useState<Tab>('ships');
   const [customShips, setCustomShips] = useState<ShipCardData[]>(loadCustomShips);
   const [customSquadrons, setCustomSquadrons] = useState<SquadronCardData[]>(loadCustomSquadrons);
+  const [customUpgradeCards, setCustomUpgradeCards] = useState<UpgradeCardData[]>(loadCustomUpgradeCards);
   const [keywords, setKeywords] = useState<KeywordDefinition[]>(loadKeywords);
   const [upgradeSlots, setUpgradeSlots] = useState<UpgradeSlotDefinition[]>(loadUpgradeSlots);
   const [printQueueShips, setPrintQueueShips] = useState<ShipCardData[]>([]);
   const [printQueueSquadrons, setPrintQueueSquadrons] = useState<SquadronCardData[]>([]);
+  const [printQueueUpgradeCards, setPrintQueueUpgradeCards] = useState<UpgradeCardData[]>([]);
 
   useEffect(() => {
     saveCustomShips(customShips);
@@ -43,6 +52,10 @@ function App() {
   useEffect(() => {
     saveCustomSquadrons(customSquadrons);
   }, [customSquadrons]);
+
+  useEffect(() => {
+    saveCustomUpgradeCards(customUpgradeCards);
+  }, [customUpgradeCards]);
 
   useEffect(() => {
     saveKeywords(keywords);
@@ -72,6 +85,17 @@ function App() {
   function removeCustomSquadron(id: string) {
     setCustomSquadrons((prev) => prev.filter((s) => s.id !== id));
     setPrintQueueSquadrons((prev) => prev.filter((s) => s.id !== id));
+  }
+
+  function toggleUpgradeCardPrint(card: UpgradeCardData) {
+    setPrintQueueUpgradeCards((prev) =>
+      prev.some((c) => c.id === card.id) ? prev.filter((c) => c.id !== card.id) : [...prev, card],
+    );
+  }
+
+  function removeCustomUpgradeCard(id: string) {
+    setCustomUpgradeCards((prev) => prev.filter((c) => c.id !== id));
+    setPrintQueueUpgradeCards((prev) => prev.filter((c) => c.id !== id));
   }
 
   function addKeyword(keyword: KeywordDefinition) {
@@ -104,13 +128,13 @@ function App() {
     );
   }
 
-  const printCount = printQueueShips.length + printQueueSquadrons.length;
+  const printCount = printQueueShips.length + printQueueSquadrons.length + printQueueUpgradeCards.length;
 
   return (
     <div className="app">
       <header className="app__header no-print">
         <h1>SWA Builder</h1>
-        <p>Custom Star Wars: Armada ship and squadron card preview</p>
+        <p>Custom Star Wars: Armada ship, squadron, and upgrade card preview</p>
       </header>
 
       <nav className="tab-nav no-print">
@@ -166,7 +190,7 @@ function App() {
         </section>
       </div>
 
-      <div className={`tab-panel${activeTab === 'upgrades' ? '' : ' tab-panel--hidden'}`}>
+      <div className={`tab-panel${activeTab === 'upgradeTypes' ? '' : ' tab-panel--hidden'}`}>
         <section className="app__section no-print">
           <h2>Upgrade Slot Library</h2>
           <UpgradeSlotLibraryEditor
@@ -175,6 +199,49 @@ function App() {
             onUpdate={updateUpgradeSlot}
             onRemove={removeUpgradeSlot}
           />
+        </section>
+      </div>
+
+      <div className={`tab-panel${activeTab === 'upgradeCards' ? '' : ' tab-panel--hidden'}`}>
+        <section className="app__section no-print">
+          <h2>Build an Upgrade Card</h2>
+          <UpgradeCardEditor
+            upgradeSlotLibrary={upgradeSlots}
+            onAdd={(card) => setCustomUpgradeCards((prev) => [...prev, card])}
+          />
+        </section>
+
+        {customUpgradeCards.length > 0 && (
+          <section className="app__section no-print">
+            <h2>Your Upgrade Cards</h2>
+            <div className="app__gallery">
+              {customUpgradeCards.map((card) => (
+                <UpgradeCardTile
+                  key={card.id}
+                  card={card}
+                  upgradeSlotLibrary={upgradeSlots}
+                  inQueue={printQueueUpgradeCards.some((c) => c.id === card.id)}
+                  onTogglePrint={() => toggleUpgradeCardPrint(card)}
+                  onRemove={() => removeCustomUpgradeCard(card.id)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="app__section no-print">
+          <h2>Sample Upgrade Cards</h2>
+          <div className="app__gallery">
+            {sampleUpgradeCards.map((card) => (
+              <UpgradeCardTile
+                key={card.id}
+                card={card}
+                upgradeSlotLibrary={upgradeSlots}
+                inQueue={printQueueUpgradeCards.some((c) => c.id === card.id)}
+                onTogglePrint={() => toggleUpgradeCardPrint(card)}
+              />
+            ))}
+          </div>
         </section>
       </div>
 
@@ -249,6 +316,9 @@ function App() {
           ))}
           {printQueueSquadrons.map((squadron) => (
             <SquadronCard key={squadron.id} squadron={squadron} keywords={keywords} />
+          ))}
+          {printQueueUpgradeCards.map((card) => (
+            <UpgradeCardPreview key={card.id} card={card} upgradeSlotLibrary={upgradeSlots} />
           ))}
         </div>
       </section>
