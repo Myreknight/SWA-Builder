@@ -1,5 +1,7 @@
+import type { CSSProperties } from 'react';
 import type { UpgradeSlotDefinition } from '../types/ship';
 import type { UpgradeCardData } from '../types/upgrade';
+import '../styles/cardFrame.css';
 import './UpgradeCardPreview.css';
 
 interface UpgradeCardPreviewProps {
@@ -7,24 +9,33 @@ interface UpgradeCardPreviewProps {
   upgradeSlotLibrary: UpgradeSlotDefinition[];
 }
 
-// Deliberately plain — the visual template for upgrade cards hasn't been
-// designed yet, this just proves the data round-trips correctly.
 export function UpgradeCardPreview({ card, upgradeSlotLibrary }: UpgradeCardPreviewProps) {
   const typeName = upgradeSlotLibrary.find((s) => s.id === card.upgradeSlotId)?.name ?? '—';
 
   return (
-    <div className="upgrade-card-preview">
-      {card.artUrl && (
-        <div className="upgrade-card-preview__art" style={{ backgroundImage: `url(${card.artUrl})` }} />
-      )}
-      <div className="upgrade-card-preview__header">
-        <h2>{card.name || 'Untitled Upgrade'}</h2>
-        <span className="upgrade-card-preview__points" title="Point cost">
+    <div
+      className="card-frame upgrade-card"
+      style={{ '--accent-color': card.accentColor || '#888888' } as CSSProperties}
+    >
+      <div
+        className="card-frame__art"
+        style={card.artUrl ? { backgroundImage: `url(${card.artUrl})` } : undefined}
+      />
+      <div className="card-frame__overlay" />
+
+      <header className="card-frame__header">
+        <div className="card-frame__title">
+          <h2>{card.name || 'Untitled Upgrade'}</h2>
+          <span className="card-frame__subtitle">{typeName}</span>
+        </div>
+        <div className="card-frame__points" title="Point cost">
           {card.points}
-        </span>
+        </div>
+      </header>
+
+      <div className="upgrade-card__body">
+        {card.text && <p className="upgrade-card__text">{card.text}</p>}
       </div>
-      <div className="upgrade-card-preview__type">{typeName}</div>
-      {card.text && <p className="upgrade-card-preview__text">{card.text}</p>}
     </div>
   );
 }

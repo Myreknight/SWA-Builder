@@ -6,6 +6,7 @@ import { DefenseTokenChips } from './DefenseTokenChips';
 import { Stat } from './Stat';
 import '../styles/dice.css';
 import '../styles/tokenBadge.css';
+import '../styles/cardFrame.css';
 import './SquadronCard.css';
 
 interface SquadronCardProps {
@@ -25,24 +26,24 @@ export function SquadronCard({ squadron, keywords }: SquadronCardProps) {
 
   return (
     <div
-      className="squadron-card"
+      className="card-frame squadron-card"
       style={{ '--accent-color': squadron.accentColor || '#888888' } as CSSProperties}
     >
       <div
-        className="squadron-card__art"
+        className="card-frame__art"
         style={squadron.artUrl ? { backgroundImage: `url(${squadron.artUrl})` } : undefined}
       />
-      <div className="squadron-card__overlay" />
+      <div className="card-frame__overlay" />
 
-      <header className="squadron-card__header">
-        <div className="squadron-card__title">
+      <header className="card-frame__header">
+        <div className="card-frame__title">
           <h2>
-            {squadron.unique && <span className="squadron-card__unique">&#9670;</span>}
+            {squadron.unique && <span className="card-frame__unique">&#9670;</span>}
             {squadron.name}
           </h2>
-          <span className="squadron-card__subtitle">{squadron.faction}</span>
+          <span className="card-frame__subtitle">{squadron.faction}</span>
         </div>
-        <div className="squadron-card__points" title="Point cost">
+        <div className="card-frame__points" title="Point cost">
           {squadron.points}
         </div>
       </header>

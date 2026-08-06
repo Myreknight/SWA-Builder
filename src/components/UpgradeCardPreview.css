@@ -1,70 +1,26 @@
-.upgrade-card-preview {
-  width: 2.5in;
-  min-height: 3.5in;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  padding: 10px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--text-h);
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+.upgrade-card {
+  --card-width: 4.75in;
+  --card-height: 2.75in;
 }
 
-.upgrade-card-preview__art {
+.upgrade-card__body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  padding: 6px 12px 12px;
+}
+
+.upgrade-card__text {
   width: 100%;
-  height: 1.4in;
-  border-radius: 6px;
-  background-size: cover;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-.upgrade-card-preview__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.upgrade-card-preview__header h2 {
   margin: 0;
-  font-size: 15px;
-  line-height: 1.2;
-}
-
-.upgrade-card-preview__points {
-  flex-shrink: 0;
-  min-width: 20px;
-  padding: 2px 6px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.55);
+  border-left: 3px solid var(--accent-color);
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  font-weight: 700;
-  font-size: 12px;
-  text-align: center;
-}
-
-.upgrade-card-preview__type {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  opacity: 0.7;
-}
-
-.upgrade-card-preview__text {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.4;
-  opacity: 0.9;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.45;
   white-space: pre-wrap;
-}
-
-@media print {
-  .upgrade-card-preview {
-    break-inside: avoid;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
 }

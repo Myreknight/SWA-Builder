@@ -12,6 +12,7 @@ import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
 import { DefenseTokenChips } from './DefenseTokenChips';
 import { Stat } from './Stat';
 import '../styles/dice.css';
+import '../styles/cardFrame.css';
 import './ShipCard.css';
 
 const FACING_LABEL: Record<Facing, string> = {
@@ -30,21 +31,24 @@ interface ShipCardProps {
 
 export function ShipCard({ ship, upgradeSlotLibrary }: ShipCardProps) {
   return (
-    <div className="ship-card" style={{ '--accent-color': ship.accentColor || '#888888' } as CSSProperties}>
+    <div
+      className="card-frame ship-card"
+      style={{ '--accent-color': ship.accentColor || '#888888' } as CSSProperties}
+    >
       <div
-        className="ship-card__art"
+        className="card-frame__art"
         style={ship.artUrl ? { backgroundImage: `url(${ship.artUrl})` } : undefined}
       />
-      <div className="ship-card__overlay" />
+      <div className="card-frame__overlay" />
 
-      <header className="ship-card__header">
-        <div className="ship-card__title">
+      <header className="card-frame__header">
+        <div className="card-frame__title">
           <h2>{ship.name}</h2>
-          <span className="ship-card__subtitle">
+          <span className="card-frame__subtitle">
             {ship.faction} &middot; {ship.size}
           </span>
         </div>
-        <div className="ship-card__points" title="Point cost">
+        <div className="card-frame__points" title="Point cost">
           {ship.points}
         </div>
       </header>

@@ -1,84 +1,13 @@
 .squadron-card {
   --card-width: 4.75in;
   --card-height: 2.25in;
-  --accent-color: #888888;
-  --accent-color-dark: color-mix(in srgb, var(--accent-color) 45%, black);
-
-  position: relative;
-  width: var(--card-width);
-  height: var(--card-height);
-  border-radius: 10px;
-  overflow: hidden;
-  color: #f5f5f5;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-  border: 2px solid var(--accent-color);
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
 }
 
-.squadron-card__art {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-}
-
-.squadron-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.75) 0%,
-    rgba(0, 0, 0, 0.4) 40%,
-    rgba(0, 0, 0, 0.85) 100%
-  );
-}
-
-.squadron-card__header,
 .squadron-card__body,
 .squadron-card__tokens,
 .squadron-card__keywords {
   position: relative;
   z-index: 1;
-}
-
-.squadron-card__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 8px 10px 2px;
-}
-
-.squadron-card__title h2 {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.15;
-  letter-spacing: 0.2px;
-}
-
-.squadron-card__unique {
-  color: var(--accent-color);
-  margin-right: 4px;
-  font-size: 11px;
-}
-
-.squadron-card__subtitle {
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  opacity: 0.75;
-}
-
-.squadron-card__points {
-  min-width: 22px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: var(--accent-color);
-  font-weight: 700;
-  font-size: 13px;
-  text-align: center;
 }
 
 .squadron-card__body {
@@ -124,13 +53,4 @@
   border: 1px solid var(--accent-color);
   text-transform: uppercase;
   letter-spacing: 0.3px;
-}
-
-@media print {
-  .squadron-card {
-    box-shadow: none;
-    break-inside: avoid;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
 }

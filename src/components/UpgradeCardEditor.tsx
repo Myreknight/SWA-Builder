@@ -58,6 +58,10 @@ export function UpgradeCardEditor({ upgradeSlotLibrary, onAdd }: UpgradeCardEdit
                 onChange={(e) => update('points', Number(e.target.value))}
               />
             </label>
+            <label className="field field--narrow">
+              <span>Border Color</span>
+              <input type="color" value={card.accentColor} onChange={(e) => update('accentColor', e.target.value)} />
+            </label>
           </div>
           <label className="field">
             <span>Upload Image</span>

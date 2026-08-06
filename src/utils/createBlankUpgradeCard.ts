@@ -8,5 +8,6 @@ export function createBlankUpgradeCard(): UpgradeCardData {
     points: 0,
     text: '',
     artUrl: '',
+    accentColor: '#888888',
   };
 }
