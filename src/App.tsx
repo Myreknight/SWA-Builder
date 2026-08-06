@@ -7,19 +7,22 @@ import { ShipTile } from './components/ShipTile';
 import { SquadronCard } from './components/SquadronCard';
 import { SquadronEditor } from './components/SquadronEditor';
 import { SquadronTile } from './components/SquadronTile';
+import { UpgradeSlotLibraryEditor } from './components/UpgradeSlotLibraryEditor';
 import { sampleShips } from './data/sampleShips';
 import { sampleSquadrons } from './data/sampleSquadrons';
-import type { ShipCardData } from './types/ship';
+import type { ShipCardData, UpgradeSlotDefinition } from './types/ship';
 import type { KeywordDefinition, SquadronCardData } from './types/squadron';
 import { loadCustomShips, saveCustomShips } from './utils/customShipsStorage';
 import { loadCustomSquadrons, saveCustomSquadrons } from './utils/customSquadronsStorage';
 import { loadKeywords, saveKeywords } from './utils/keywordLibraryStorage';
+import { loadUpgradeSlots, saveUpgradeSlots } from './utils/upgradeSlotLibraryStorage';
 import './App.css';
 
-type Tab = 'ships' | 'squadrons' | 'keywords';
+type Tab = 'ships' | 'upgrades' | 'squadrons' | 'keywords';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'ships', label: 'Ships' },
+  { id: 'upgrades', label: 'Upgrades' },
   { id: 'squadrons', label: 'Squadrons' },
   { id: 'keywords', label: 'Keywords' },
 ];
@@ -29,6 +32,7 @@ function App() {
   const [customShips, setCustomShips] = useState<ShipCardData[]>(loadCustomShips);
   const [customSquadrons, setCustomSquadrons] = useState<SquadronCardData[]>(loadCustomSquadrons);
   const [keywords, setKeywords] = useState<KeywordDefinition[]>(loadKeywords);
+  const [upgradeSlots, setUpgradeSlots] = useState<UpgradeSlotDefinition[]>(loadUpgradeSlots);
   const [printQueueShips, setPrintQueueShips] = useState<ShipCardData[]>([]);
   const [printQueueSquadrons, setPrintQueueSquadrons] = useState<SquadronCardData[]>([]);
 
@@ -43,6 +47,10 @@ function App() {
   useEffect(() => {
     saveKeywords(keywords);
   }, [keywords]);
+
+  useEffect(() => {
+    saveUpgradeSlots(upgradeSlots);
+  }, [upgradeSlots]);
 
   function toggleShipPrint(ship: ShipCardData) {
     setPrintQueueShips((prev) =>
@@ -81,6 +89,21 @@ function App() {
     );
   }
 
+  function addUpgradeSlot(slot: UpgradeSlotDefinition) {
+    setUpgradeSlots((prev) => [...prev, slot]);
+  }
+
+  function updateUpgradeSlot(id: string, patch: Partial<UpgradeSlotDefinition>) {
+    setUpgradeSlots((prev) => prev.map((s) => (s.id === id ? { ...s, ...patch } : s)));
+  }
+
+  function removeUpgradeSlot(id: string) {
+    setUpgradeSlots((prev) => prev.filter((s) => s.id !== id));
+    setCustomShips((prev) =>
+      prev.map((s) => ({ ...s, upgradeSlots: s.upgradeSlots.filter((slotId) => slotId !== id) })),
+    );
+  }
+
   const printCount = printQueueShips.length + printQueueSquadrons.length;
 
   return (
@@ -106,7 +129,7 @@ function App() {
       <div className={`tab-panel${activeTab === 'ships' ? '' : ' tab-panel--hidden'}`}>
         <section className="app__section no-print">
           <h2>Build a Ship</h2>
-          <ShipEditor onAdd={(ship) => setCustomShips((prev) => [...prev, ship])} />
+          <ShipEditor upgradeSlotLibrary={upgradeSlots} onAdd={(ship) => setCustomShips((prev) => [...prev, ship])} />
         </section>
 
         {customShips.length > 0 && (
@@ -117,6 +140,7 @@ function App() {
                 <ShipTile
                   key={ship.id}
                   ship={ship}
+                  upgradeSlotLibrary={upgradeSlots}
                   inQueue={printQueueShips.some((s) => s.id === ship.id)}
                   onTogglePrint={() => toggleShipPrint(ship)}
                   onRemove={() => removeCustomShip(ship.id)}
@@ -133,11 +157,24 @@ function App() {
               <ShipTile
                 key={ship.id}
                 ship={ship}
+                upgradeSlotLibrary={upgradeSlots}
                 inQueue={printQueueShips.some((s) => s.id === ship.id)}
                 onTogglePrint={() => toggleShipPrint(ship)}
               />
             ))}
           </div>
+        </section>
+      </div>
+
+      <div className={`tab-panel${activeTab === 'upgrades' ? '' : ' tab-panel--hidden'}`}>
+        <section className="app__section no-print">
+          <h2>Upgrade Slot Library</h2>
+          <UpgradeSlotLibraryEditor
+            upgradeSlots={upgradeSlots}
+            onAdd={addUpgradeSlot}
+            onUpdate={updateUpgradeSlot}
+            onRemove={removeUpgradeSlot}
+          />
         </section>
       </div>
 
@@ -206,7 +243,7 @@ function App() {
         <div className="app__gallery print-area">
           {printQueueShips.map((ship) => (
             <div key={ship.id} className="print-pair">
-              <ShipCard ship={ship} />
+              <ShipCard ship={ship} upgradeSlotLibrary={upgradeSlots} />
               <ShipBase ship={ship} />
             </div>
           ))}

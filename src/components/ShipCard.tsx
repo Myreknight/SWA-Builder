@@ -1,5 +1,12 @@
 import type { CSSProperties } from 'react';
-import type { AntiSquadronArmament, DiceCount, Facing, ShipCardData, SpeedSetting } from '../types/ship';
+import type {
+  AntiSquadronArmament,
+  DiceCount,
+  Facing,
+  ShipCardData,
+  SpeedSetting,
+  UpgradeSlotDefinition,
+} from '../types/ship';
 import { ALL_SPEEDS, FACING_ORDER } from '../types/ship';
 import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
 import { DefenseTokenChips } from './DefenseTokenChips';
@@ -18,9 +25,10 @@ const YAW_PIP_COUNT = 3;
 
 interface ShipCardProps {
   ship: ShipCardData;
+  upgradeSlotLibrary: UpgradeSlotDefinition[];
 }
 
-export function ShipCard({ ship }: ShipCardProps) {
+export function ShipCard({ ship, upgradeSlotLibrary }: ShipCardProps) {
   return (
     <div className="ship-card" style={{ '--accent-color': ship.accentColor || '#888888' } as CSSProperties}>
       <div
@@ -64,11 +72,14 @@ export function ShipCard({ ship }: ShipCardProps) {
       <SpeedChart speeds={ship.speed} />
 
       <footer className="ship-card__upgrades">
-        {ship.upgradeSlots.map((slot, i) => (
-          <span key={`${slot}-${i}`} className="upgrade-slot">
-            {slot}
-          </span>
-        ))}
+        {ship.upgradeSlots.map((slotId, i) => {
+          const def = upgradeSlotLibrary.find((s) => s.id === slotId);
+          return (
+            <span key={`${slotId}-${i}`} className="upgrade-slot">
+              {def?.name ?? slotId}
+            </span>
+          );
+        })}
       </footer>
     </div>
   );

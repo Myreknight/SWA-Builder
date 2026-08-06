@@ -1,20 +1,21 @@
-import type { ShipCardData } from '../types/ship';
+import type { ShipCardData, UpgradeSlotDefinition } from '../types/ship';
 import { ShipBase } from './ShipBase';
 import { ShipCard } from './ShipCard';
 import '../styles/tile.css';
 
 interface ShipTileProps {
   ship: ShipCardData;
+  upgradeSlotLibrary: UpgradeSlotDefinition[];
   inQueue: boolean;
   onTogglePrint: () => void;
   onRemove?: () => void;
 }
 
-export function ShipTile({ ship, inQueue, onTogglePrint, onRemove }: ShipTileProps) {
+export function ShipTile({ ship, upgradeSlotLibrary, inQueue, onTogglePrint, onRemove }: ShipTileProps) {
   return (
     <div className="tile">
       <div className="tile__outputs">
-        <ShipCard ship={ship} />
+        <ShipCard ship={ship} upgradeSlotLibrary={upgradeSlotLibrary} />
         <ShipBase ship={ship} />
       </div>
       <div className="tile__actions">

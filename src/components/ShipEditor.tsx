@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { DefenseTokens, DiceColor, Facing, ShipCardData, UpgradeSlot } from '../types/ship';
+import type { DefenseTokens, DiceColor, Facing, ShipCardData, UpgradeSlot, UpgradeSlotDefinition } from '../types/ship';
 import { jointsForSpeed } from '../types/ship';
 import { createBlankShip } from '../utils/createBlankShip';
 import { ShipBase } from './ShipBase';
@@ -18,10 +18,11 @@ import './ShipEditor.css';
 const MAX_DEFENSE_TOKENS = 4;
 
 interface ShipEditorProps {
+  upgradeSlotLibrary: UpgradeSlotDefinition[];
   onAdd: (ship: ShipCardData) => void;
 }
 
-export function ShipEditor({ onAdd }: ShipEditorProps) {
+export function ShipEditor({ upgradeSlotLibrary, onAdd }: ShipEditorProps) {
   const [ship, setShip] = useState<ShipCardData>(createBlankShip);
 
   function update<K extends keyof ShipCardData>(key: K, value: ShipCardData[K]) {
@@ -118,6 +119,7 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
         <ShipEditorDefenseTokens defenseTokens={ship.defenseTokens} onUpdateToken={updateDefenseToken} />
         <ShipEditorUpgradeSlots
           upgradeSlots={ship.upgradeSlots}
+          upgradeSlotLibrary={upgradeSlotLibrary}
           onAddSlot={addUpgradeSlot}
           onRemoveSlot={removeUpgradeSlot}
         />
@@ -129,7 +131,7 @@ export function ShipEditor({ onAdd }: ShipEditorProps) {
 
       <div className="card-editor__preview">
         <h3>Live Preview</h3>
-        <ShipCard ship={ship} />
+        <ShipCard ship={ship} upgradeSlotLibrary={upgradeSlotLibrary} />
         <ShipBase ship={ship} />
       </div>
     </div>

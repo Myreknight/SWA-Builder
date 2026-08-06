@@ -51,34 +51,17 @@ export function jointsForSpeed(speed: number): number {
 
 export const ALL_SPEEDS = [1, 2, 3, 4] as const;
 
-export type UpgradeSlot =
-  | 'Commander'
-  | 'Officer'
-  | 'Weapons Team'
-  | 'Offensive Retrofit'
-  | 'Defensive Retrofit'
-  | 'Fleet Command'
-  | 'Fleet Support'
-  | 'Turbolaser'
-  | 'Ion Cannon'
-  | 'Ordnance'
-  | 'Boarding Team'
-  | 'Title';
+// Free-form id referencing an entry in the user-editable upgrade slot
+// library (see data/defaultUpgradeSlots.ts) — not a fixed set, so slot
+// types can be renamed or added. A ship's upgradeSlots array holds ids,
+// not literal names, so renaming a library entry updates every ship
+// using it. Duplicates are allowed (a ship can have two Ordnance slots).
+export type UpgradeSlot = string;
 
-export const UPGRADE_SLOT_OPTIONS: UpgradeSlot[] = [
-  'Commander',
-  'Officer',
-  'Weapons Team',
-  'Offensive Retrofit',
-  'Defensive Retrofit',
-  'Fleet Command',
-  'Fleet Support',
-  'Turbolaser',
-  'Ion Cannon',
-  'Ordnance',
-  'Boarding Team',
-  'Title',
-];
+export interface UpgradeSlotDefinition {
+  id: string;
+  name: string;
+}
 
 export interface ShipCardData {
   id: string;

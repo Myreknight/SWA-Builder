@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { KeywordDefinition } from '../types/squadron';
 import '../styles/forms.css';
+import '../styles/libraryEditor.css';
 import './KeywordLibraryEditor.css';
 
 interface KeywordLibraryEditorProps {
@@ -29,13 +30,13 @@ export function KeywordLibraryEditor({ keywords, onAdd, onUpdate, onRemove }: Ke
   }
 
   return (
-    <div className="keyword-library">
-      <div className="keyword-library__list">
+    <div className="library-editor">
+      <div className="library-list">
         {keywords.map((kw) => (
-          <div key={kw.id} className="keyword-row">
+          <div key={kw.id} className="library-row library-row--with-description">
             <div className="keyword-row__name-col">
               <input
-                className="keyword-row__name"
+                className="library-row__name"
                 value={kw.name}
                 onChange={(e) => onUpdate(kw.id, { name: e.target.value })}
                 aria-label="Keyword name"
@@ -58,7 +59,7 @@ export function KeywordLibraryEditor({ keywords, onAdd, onUpdate, onRemove }: Ke
             />
             <button
               type="button"
-              className="keyword-row__remove"
+              className="library-row__remove"
               onClick={() => onRemove(kw.id)}
               aria-label={`Remove ${kw.name || 'keyword'}`}
             >
@@ -68,10 +69,10 @@ export function KeywordLibraryEditor({ keywords, onAdd, onUpdate, onRemove }: Ke
         ))}
       </div>
 
-      <div className="keyword-row keyword-row--new">
+      <div className="library-row library-row--with-description library-row--new">
         <div className="keyword-row__name-col">
           <input
-            className="keyword-row__name"
+            className="library-row__name"
             value={draftName}
             onChange={(e) => setDraftName(e.target.value)}
             placeholder="New keyword name"
