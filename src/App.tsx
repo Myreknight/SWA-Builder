@@ -22,6 +22,7 @@ import { loadCustomShips, saveCustomShips } from './utils/customShipsStorage';
 import { loadCustomSquadrons, saveCustomSquadrons } from './utils/customSquadronsStorage';
 import { loadCustomUpgradeCards, saveCustomUpgradeCards } from './utils/customUpgradeCardsStorage';
 import { loadKeywords, saveKeywords } from './utils/keywordLibraryStorage';
+import { mergeById } from './utils/mergeById';
 import { loadUpgradeSlots, saveUpgradeSlots } from './utils/upgradeSlotLibraryStorage';
 import './App.css';
 
@@ -145,16 +146,17 @@ function App() {
       try {
         const backup = parseBackup(reader.result as string);
         const confirmed = window.confirm(
-          `Import ${backup.ships.length} ships, ${backup.squadrons.length} squadrons, ` +
+          `Merge ${backup.ships.length} ships, ${backup.squadrons.length} squadrons, ` +
             `${backup.upgradeCards.length} upgrade cards, ${backup.keywords.length} keywords, and ` +
-            `${backup.upgradeSlots.length} upgrade types?\n\nThis replaces everything currently saved on this device.`,
+            `${backup.upgradeSlots.length} upgrade types from this backup?\n\n` +
+            `Cards with a matching id are updated in place; new ones are added. Nothing already on this device is deleted.`,
         );
         if (!confirmed) return;
-        setCustomShips(backup.ships);
-        setCustomSquadrons(backup.squadrons);
-        setCustomUpgradeCards(backup.upgradeCards);
-        setKeywords(backup.keywords);
-        setUpgradeSlots(backup.upgradeSlots);
+        setCustomShips((prev) => mergeById(prev, backup.ships));
+        setCustomSquadrons((prev) => mergeById(prev, backup.squadrons));
+        setCustomUpgradeCards((prev) => mergeById(prev, backup.upgradeCards));
+        setKeywords((prev) => mergeById(prev, backup.keywords));
+        setUpgradeSlots((prev) => mergeById(prev, backup.upgradeSlots));
       } catch (err) {
         console.warn('Failed to import backup', err);
         window.alert("That file doesn't look like a valid SWA Builder backup.");

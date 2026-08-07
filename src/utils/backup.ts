@@ -1,6 +1,9 @@
 import type { ShipCardData, UpgradeSlotDefinition } from '../types/ship';
 import type { KeywordDefinition, SquadronCardData } from '../types/squadron';
 import type { UpgradeCardData } from '../types/upgrade';
+import { createBlankShip } from './createBlankShip';
+import { createBlankSquadron } from './createBlankSquadron';
+import { createBlankUpgradeCard } from './createBlankUpgradeCard';
 
 export interface AppBackup {
   schemaVersion: 1;
@@ -25,6 +28,34 @@ export function downloadBackup(data: BackupContents): void {
   URL.revokeObjectURL(url);
 }
 
+// Backfills any field missing from an older backup's schema with the same
+// defaults a brand-new card would get, so imports from a prior app version
+// don't carry `undefined` fields into the current one.
+function fillShipDefaults(ship: Partial<ShipCardData>): ShipCardData {
+  return { ...createBlankShip(), ...ship, id: ship.id || crypto.randomUUID() };
+}
+
+function fillSquadronDefaults(squadron: Partial<SquadronCardData>): SquadronCardData {
+  return { ...createBlankSquadron(), ...squadron, id: squadron.id || crypto.randomUUID() };
+}
+
+function fillUpgradeCardDefaults(card: Partial<UpgradeCardData>): UpgradeCardData {
+  return { ...createBlankUpgradeCard(), ...card, id: card.id || crypto.randomUUID() };
+}
+
+function fillKeywordDefaults(keyword: Partial<KeywordDefinition>): KeywordDefinition {
+  return {
+    id: keyword.id || crypto.randomUUID(),
+    name: keyword.name ?? '',
+    description: keyword.description ?? '',
+    hasValue: keyword.hasValue,
+  };
+}
+
+function fillUpgradeSlotDefaults(slot: Partial<UpgradeSlotDefinition>): UpgradeSlotDefinition {
+  return { id: slot.id || crypto.randomUUID(), name: slot.name ?? '' };
+}
+
 export function parseBackup(text: string): AppBackup {
   const data = JSON.parse(text);
   if (!data || typeof data !== 'object' || !Array.isArray(data.ships)) {
@@ -33,10 +64,10 @@ export function parseBackup(text: string): AppBackup {
   return {
     schemaVersion: 1,
     exportedAt: typeof data.exportedAt === 'string' ? data.exportedAt : new Date().toISOString(),
-    ships: data.ships ?? [],
-    squadrons: data.squadrons ?? [],
-    upgradeCards: data.upgradeCards ?? [],
-    keywords: data.keywords ?? [],
-    upgradeSlots: data.upgradeSlots ?? [],
+    ships: (data.ships ?? []).map(fillShipDefaults),
+    squadrons: (data.squadrons ?? []).map(fillSquadronDefaults),
+    upgradeCards: (data.upgradeCards ?? []).map(fillUpgradeCardDefaults),
+    keywords: (data.keywords ?? []).map(fillKeywordDefaults),
+    upgradeSlots: (data.upgradeSlots ?? []).map(fillUpgradeSlotDefaults),
   };
 }
