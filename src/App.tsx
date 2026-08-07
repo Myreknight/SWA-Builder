@@ -17,6 +17,7 @@ import { sampleUpgradeCards } from './data/sampleUpgradeCards';
 import type { ShipCardData, UpgradeSlotDefinition } from './types/ship';
 import type { KeywordDefinition, SquadronCardData } from './types/squadron';
 import type { UpgradeCardData } from './types/upgrade';
+import { downloadBackup, parseBackup } from './utils/backup';
 import { loadCustomShips, saveCustomShips } from './utils/customShipsStorage';
 import { loadCustomSquadrons, saveCustomSquadrons } from './utils/customSquadronsStorage';
 import { loadCustomUpgradeCards, saveCustomUpgradeCards } from './utils/customUpgradeCardsStorage';
@@ -128,6 +129,40 @@ function App() {
     );
   }
 
+  function handleExport() {
+    downloadBackup({
+      ships: customShips,
+      squadrons: customSquadrons,
+      upgradeCards: customUpgradeCards,
+      keywords,
+      upgradeSlots,
+    });
+  }
+
+  function handleImportFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const backup = parseBackup(reader.result as string);
+        const confirmed = window.confirm(
+          `Import ${backup.ships.length} ships, ${backup.squadrons.length} squadrons, ` +
+            `${backup.upgradeCards.length} upgrade cards, ${backup.keywords.length} keywords, and ` +
+            `${backup.upgradeSlots.length} upgrade types?\n\nThis replaces everything currently saved on this device.`,
+        );
+        if (!confirmed) return;
+        setCustomShips(backup.ships);
+        setCustomSquadrons(backup.squadrons);
+        setCustomUpgradeCards(backup.upgradeCards);
+        setKeywords(backup.keywords);
+        setUpgradeSlots(backup.upgradeSlots);
+      } catch (err) {
+        console.warn('Failed to import backup', err);
+        window.alert("That file doesn't look like a valid SWA Builder backup.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
   const printCount = printQueueShips.length + printQueueSquadrons.length + printQueueUpgradeCards.length;
 
   return (
@@ -136,6 +171,24 @@ function App() {
         <h1>SWA Builder</h1>
         <p>Custom Star Wars: Armada ship, squadron, and upgrade card preview</p>
       </header>
+
+      <div className="backup-toolbar no-print">
+        <button type="button" onClick={handleExport}>
+          Export All
+        </button>
+        <label className="backup-toolbar__import">
+          Import Backup
+          <input
+            type="file"
+            accept="application/json"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleImportFile(file);
+              e.target.value = '';
+            }}
+          />
+        </label>
+      </div>
 
       <nav className="tab-nav no-print">
         {TABS.map((tab) => (

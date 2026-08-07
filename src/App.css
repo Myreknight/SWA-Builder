@@ -17,6 +17,40 @@
   opacity: 0.7;
 }
 
+.backup-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.backup-toolbar button,
+.backup-toolbar__import {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.backup-toolbar__import {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.backup-toolbar__import input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
 .tab-nav {
   display: flex;
   justify-content: center;
