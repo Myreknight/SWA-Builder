@@ -105,10 +105,13 @@ function SpeedChart({ speeds }: { speeds: SpeedSetting[] }) {
             {active && (
               <div className="joint-list">
                 {yaws.map((yaw, jointIndex) => (
-                  <div key={jointIndex} className="yaw-pips">
-                    {Array.from({ length: YAW_PIP_COUNT }, (_, i) => (
-                      <span key={i} className={`yaw-pip${i < yaw ? ' filled' : ''}`} />
-                    ))}
+                  <div key={jointIndex} className="joint-row" title={`Joint ${jointIndex + 1}`}>
+                    <span className="joint-row__label">{jointIndex + 1}</span>
+                    <div className="yaw-pips">
+                      {Array.from({ length: YAW_PIP_COUNT }, (_, i) => (
+                        <span key={i} className={`yaw-pip${i < yaw ? ' filled' : ''}`} />
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>

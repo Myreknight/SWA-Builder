@@ -171,8 +171,23 @@
 .joint-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 2px;
+}
+
+.joint-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.joint-row__label {
+  font-size: 6px;
+  font-weight: 700;
+  opacity: 0.55;
+  min-width: 6px;
+  text-align: right;
+  line-height: 1;
 }
 
 .speed-pip {
