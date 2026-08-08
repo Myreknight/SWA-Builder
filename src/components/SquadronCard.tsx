@@ -1,10 +1,9 @@
 import type { CSSProperties } from 'react';
 import type { DiceCount } from '../types/ship';
 import type { KeywordDefinition, SquadronCardData } from '../types/squadron';
-import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
 import { DefenseTokenChips } from './DefenseTokenChips';
+import { DiceDiamonds } from './DiceDiamonds';
 import { Stat } from './Stat';
-import '../styles/dice.css';
 import '../styles/tokenBadge.css';
 import '../styles/cardFrame.css';
 import './SquadronCard.css';
@@ -75,22 +74,9 @@ export function SquadronCard({ squadron, keywords }: SquadronCardProps) {
 }
 
 function DiceStat({ label, dice }: { label: string; dice: DiceCount }) {
-  const entries = DICE_ORDER.map((color) => [color, dice[color]] as const).filter(([, count]) => count > 0);
-
   return (
     <div className="stat squadron-card__dice-stat">
-      {entries.length === 0 ? (
-        <span className="chip-row__empty">&mdash;</span>
-      ) : (
-        <div className="squadron-card__dice">
-          {entries.map(([color, count]) => (
-            <span key={color} className={`die die--${color}`}>
-              {DIE_LETTER[color]}
-              {count}
-            </span>
-          ))}
-        </div>
-      )}
+      <DiceDiamonds dice={dice} />
       <span className="stat__label">{label}</span>
     </div>
   );

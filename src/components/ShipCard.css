@@ -133,10 +133,6 @@
   flex: 1;
 }
 
-.armament-row__none {
-  opacity: 0.4;
-}
-
 .speed-chart {
   display: flex;
   justify-content: center;

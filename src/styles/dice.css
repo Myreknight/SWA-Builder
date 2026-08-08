@@ -21,3 +21,34 @@
 .die--black {
   background: var(--die-black, #1a1a1a);
 }
+
+.die-diamond-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.die-diamond {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 1.5px;
+  transform: rotate(45deg);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-sizing: border-box;
+}
+
+.die-diamond--red {
+  background: var(--die-red, #b33);
+}
+.die-diamond--blue {
+  background: var(--die-blue, #2b6cb0);
+}
+.die-diamond--black {
+  background: var(--die-black, #1a1a1a);
+}
+
+.die-diamond-empty {
+  font-size: 8px;
+  opacity: 0.4;
+}

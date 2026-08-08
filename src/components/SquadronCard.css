@@ -23,11 +23,6 @@
   min-width: 64px;
 }
 
-.squadron-card__dice {
-  display: flex;
-  gap: 3px;
-}
-
 .squadron-card__tokens {
   display: flex;
   flex-wrap: wrap;

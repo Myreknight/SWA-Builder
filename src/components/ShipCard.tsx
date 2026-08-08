@@ -8,10 +8,9 @@ import type {
   UpgradeSlotDefinition,
 } from '../types/ship';
 import { ALL_SPEEDS, FACING_ORDER } from '../types/ship';
-import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
 import { DefenseTokenChips } from './DefenseTokenChips';
+import { DiceDiamonds } from './DiceDiamonds';
 import { Stat } from './Stat';
-import '../styles/dice.css';
 import '../styles/cardFrame.css';
 import './ShipCard.css';
 
@@ -121,10 +120,7 @@ function SpeedChart({ speeds }: { speeds: SpeedSetting[] }) {
 function AntiSquadronStat({ armament }: { armament: AntiSquadronArmament }) {
   return (
     <div className="stat">
-      <span className={`die die--${armament.color} stat__die`}>
-        {DIE_LETTER[armament.color]}
-        {armament.count}
-      </span>
+      <DiceDiamonds dice={{ [armament.color]: armament.count }} className="stat__die" />
       <span className="stat__label">Anti-Squad</span>
     </div>
   );
@@ -141,22 +137,11 @@ function ArmamentTable({ armament }: { armament: Record<Facing, DiceCount> }) {
 }
 
 function ArmamentRow({ label, dice }: { label: string; dice: DiceCount }) {
-  const entries = DICE_ORDER.map((color) => [color, dice[color]] as const).filter(([, count]) => count > 0);
-
   return (
     <div className="armament-row">
       <span className="armament-row__label">{label}</span>
       <span className="armament-row__dice">
-        {entries.length === 0 ? (
-          <span className="armament-row__none">&mdash;</span>
-        ) : (
-          entries.map(([color, count]) => (
-            <span key={color} className={`die die--${color}`}>
-              {DIE_LETTER[color]}
-              {count}
-            </span>
-          ))
-        )}
+        <DiceDiamonds dice={dice} />
       </span>
     </div>
   );
