@@ -24,12 +24,13 @@ export function DefenseTokenChips({ defenseTokens }: DefenseTokenChipsProps) {
 
   return (
     <>
-      {activeTokens.map(([token, count]) => (
-        <span key={token} className={`token token--${token}`}>
-          {DEFENSE_TOKEN_LABELS[token]}
-          {(count ?? 0) > 1 ? ` x${count}` : ''}
-        </span>
-      ))}
+      {activeTokens.flatMap(([token, count]) =>
+        Array.from({ length: count ?? 0 }, (_, i) => (
+          <span key={`${token}-${i}`} className={`token token--${token}`}>
+            {DEFENSE_TOKEN_LABELS[token]}
+          </span>
+        )),
+      )}
     </>
   );
 }
