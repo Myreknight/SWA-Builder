@@ -10,7 +10,6 @@ import type {
 import { ALL_SPEEDS, FACING_ORDER } from '../types/ship';
 import { DefenseTokenChips } from './DefenseTokenChips';
 import { DiceDiamonds } from './DiceDiamonds';
-import { Stat } from './Stat';
 import '../styles/cardFrame.css';
 import './ShipCard.css';
 
@@ -43,12 +42,23 @@ export function ShipCard({ ship, upgradeSlotLibrary }: ShipCardProps) {
       <header className="card-frame__header">
         <div className="card-frame__title">
           <h2>{ship.name}</h2>
+          <span className="card-frame__points" title="Point cost">
+            {ship.points}
+          </span>
           <span className="card-frame__subtitle">
             {ship.faction} &middot; {ship.size}
           </span>
         </div>
-        <div className="card-frame__points" title="Point cost">
-          {ship.points}
+        <div className="ship-card__quick-stats">
+          <div className="ship-card__quick-stat">
+            Command <span className="ship-card__quick-stat-value">{ship.command}</span>
+          </div>
+          <div className="ship-card__quick-stat">
+            Squadron <span className="ship-card__quick-stat-value">{ship.squadron}</span>
+          </div>
+          <div className="ship-card__quick-stat">
+            Engineering <span className="ship-card__quick-stat-value">{ship.engineering}</span>
+          </div>
         </div>
       </header>
 
@@ -59,12 +69,7 @@ export function ShipCard({ ship, upgradeSlotLibrary }: ShipCardProps) {
         </div>
 
         <div className="ship-card__right">
-          <div className="ship-card__stats">
-            <Stat label="Command" value={ship.command} />
-            <Stat label="Squadron" value={ship.squadron} />
-            <Stat label="Engineering" value={ship.engineering} />
-            <AntiSquadronStat armament={ship.antiSquadronArmament} />
-          </div>
+          <AntiSquadronStat armament={ship.antiSquadronArmament} />
 
           <div className="ship-card__tokens">
             <DefenseTokenChips defenseTokens={ship.defenseTokens} />

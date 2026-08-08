@@ -97,10 +97,22 @@
   gap: 4px;
 }
 
-.ship-card__stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
+.ship-card__quick-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  opacity: 0.85;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ship-card__quick-stat-value {
+  font-weight: 700;
+  margin-left: 3px;
 }
 
 .armament-table {
