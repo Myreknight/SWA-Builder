@@ -7,10 +7,11 @@ interface SquadronTileProps {
   keywords: KeywordDefinition[];
   inQueue: boolean;
   onTogglePrint: () => void;
+  onEdit?: () => void;
   onRemove?: () => void;
 }
 
-export function SquadronTile({ squadron, keywords, inQueue, onTogglePrint, onRemove }: SquadronTileProps) {
+export function SquadronTile({ squadron, keywords, inQueue, onTogglePrint, onEdit, onRemove }: SquadronTileProps) {
   return (
     <div className="tile">
       <div className="tile__outputs">
@@ -20,6 +21,11 @@ export function SquadronTile({ squadron, keywords, inQueue, onTogglePrint, onRem
         <button type="button" className={`tile__print-toggle${inQueue ? ' active' : ''}`} onClick={onTogglePrint}>
           {inQueue ? '✓ In Print Queue' : '+ Add to Print Queue'}
         </button>
+        {onEdit && (
+          <button type="button" className="tile__edit" onClick={onEdit}>
+            Edit
+          </button>
+        )}
         {onRemove && (
           <button type="button" className="tile__remove" onClick={onRemove}>
             Delete

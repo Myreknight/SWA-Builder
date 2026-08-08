@@ -19,6 +19,7 @@
 }
 
 .tile__print-toggle,
+.tile__edit,
 .tile__remove {
   font: inherit;
   font-size: 12px;

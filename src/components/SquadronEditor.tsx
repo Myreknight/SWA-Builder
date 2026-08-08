@@ -15,11 +15,14 @@ const MAX_DEFENSE_TOKENS = 2;
 
 interface SquadronEditorProps {
   keywordLibrary: KeywordDefinition[];
-  onAdd: (squadron: SquadronCardData) => void;
+  initialSquadron?: SquadronCardData;
+  onSave: (squadron: SquadronCardData) => void;
+  onCancel?: () => void;
 }
 
-export function SquadronEditor({ keywordLibrary, onAdd }: SquadronEditorProps) {
-  const [squadron, setSquadron] = useState<SquadronCardData>(createBlankSquadron);
+export function SquadronEditor({ keywordLibrary, initialSquadron, onSave, onCancel }: SquadronEditorProps) {
+  const isEditing = Boolean(initialSquadron);
+  const [squadron, setSquadron] = useState<SquadronCardData>(() => initialSquadron ?? createBlankSquadron());
 
   function update<K extends keyof SquadronCardData>(key: K, value: SquadronCardData[K]) {
     setSquadron((prev) => ({ ...prev, [key]: value }));
@@ -75,9 +78,11 @@ export function SquadronEditor({ keywordLibrary, onAdd }: SquadronEditorProps) {
     }));
   }
 
-  function handleAdd() {
-    onAdd(squadron);
-    setSquadron(createBlankSquadron());
+  function handleSave() {
+    onSave(squadron);
+    if (!isEditing) {
+      setSquadron(createBlankSquadron());
+    }
   }
 
   return (
@@ -96,9 +101,16 @@ export function SquadronEditor({ keywordLibrary, onAdd }: SquadronEditorProps) {
           onUpdateKeywordValue={updateKeywordValue}
         />
 
-        <button type="button" className="add-item-button" onClick={handleAdd} disabled={!squadron.name}>
-          Add Squadron to Gallery
-        </button>
+        <div className="editor-actions">
+          <button type="button" className="add-item-button" onClick={handleSave} disabled={!squadron.name}>
+            {isEditing ? 'Save Changes' : 'Add Squadron to Gallery'}
+          </button>
+          {isEditing && onCancel && (
+            <button type="button" className="cancel-item-button" onClick={onCancel}>
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="card-editor__preview">

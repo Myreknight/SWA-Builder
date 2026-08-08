@@ -19,11 +19,14 @@ const MAX_DEFENSE_TOKENS = 4;
 
 interface ShipEditorProps {
   upgradeSlotLibrary: UpgradeSlotDefinition[];
-  onAdd: (ship: ShipCardData) => void;
+  initialShip?: ShipCardData;
+  onSave: (ship: ShipCardData) => void;
+  onCancel?: () => void;
 }
 
-export function ShipEditor({ upgradeSlotLibrary, onAdd }: ShipEditorProps) {
-  const [ship, setShip] = useState<ShipCardData>(createBlankShip);
+export function ShipEditor({ upgradeSlotLibrary, initialShip, onSave, onCancel }: ShipEditorProps) {
+  const isEditing = Boolean(initialShip);
+  const [ship, setShip] = useState<ShipCardData>(() => initialShip ?? createBlankShip());
 
   function update<K extends keyof ShipCardData>(key: K, value: ShipCardData[K]) {
     setShip((prev) => ({ ...prev, [key]: value }));
@@ -98,9 +101,11 @@ export function ShipEditor({ upgradeSlotLibrary, onAdd }: ShipEditorProps) {
     setShip((prev) => ({ ...prev, upgradeSlots: prev.upgradeSlots.filter((_, i) => i !== index) }));
   }
 
-  function handleAdd() {
-    onAdd(ship);
-    setShip(createBlankShip());
+  function handleSave() {
+    onSave(ship);
+    if (!isEditing) {
+      setShip(createBlankShip());
+    }
   }
 
   return (
@@ -124,9 +129,16 @@ export function ShipEditor({ upgradeSlotLibrary, onAdd }: ShipEditorProps) {
           onRemoveSlot={removeUpgradeSlot}
         />
 
-        <button type="button" className="add-item-button" onClick={handleAdd} disabled={!ship.name}>
-          Add Ship to Gallery
-        </button>
+        <div className="editor-actions">
+          <button type="button" className="add-item-button" onClick={handleSave} disabled={!ship.name}>
+            {isEditing ? 'Save Changes' : 'Add Ship to Gallery'}
+          </button>
+          {isEditing && onCancel && (
+            <button type="button" className="cancel-item-button" onClick={onCancel}>
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="card-editor__preview">

@@ -8,10 +8,18 @@ interface UpgradeCardTileProps {
   upgradeSlotLibrary: UpgradeSlotDefinition[];
   inQueue: boolean;
   onTogglePrint: () => void;
+  onEdit?: () => void;
   onRemove?: () => void;
 }
 
-export function UpgradeCardTile({ card, upgradeSlotLibrary, inQueue, onTogglePrint, onRemove }: UpgradeCardTileProps) {
+export function UpgradeCardTile({
+  card,
+  upgradeSlotLibrary,
+  inQueue,
+  onTogglePrint,
+  onEdit,
+  onRemove,
+}: UpgradeCardTileProps) {
   return (
     <div className="tile">
       <div className="tile__outputs">
@@ -21,6 +29,11 @@ export function UpgradeCardTile({ card, upgradeSlotLibrary, inQueue, onTogglePri
         <button type="button" className={`tile__print-toggle${inQueue ? ' active' : ''}`} onClick={onTogglePrint}>
           {inQueue ? '✓ In Print Queue' : '+ Add to Print Queue'}
         </button>
+        {onEdit && (
+          <button type="button" className="tile__edit" onClick={onEdit}>
+            Edit
+          </button>
+        )}
         {onRemove && (
           <button type="button" className="tile__remove" onClick={onRemove}>
             Delete

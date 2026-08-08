@@ -7,19 +7,24 @@ import '../styles/forms.css';
 
 interface UpgradeCardEditorProps {
   upgradeSlotLibrary: UpgradeSlotDefinition[];
-  onAdd: (card: UpgradeCardData) => void;
+  initialCard?: UpgradeCardData;
+  onSave: (card: UpgradeCardData) => void;
+  onCancel?: () => void;
 }
 
-export function UpgradeCardEditor({ upgradeSlotLibrary, onAdd }: UpgradeCardEditorProps) {
-  const [card, setCard] = useState<UpgradeCardData>(createBlankUpgradeCard);
+export function UpgradeCardEditor({ upgradeSlotLibrary, initialCard, onSave, onCancel }: UpgradeCardEditorProps) {
+  const isEditing = Boolean(initialCard);
+  const [card, setCard] = useState<UpgradeCardData>(() => initialCard ?? createBlankUpgradeCard());
 
   function update<K extends keyof UpgradeCardData>(key: K, value: UpgradeCardData[K]) {
     setCard((prev) => ({ ...prev, [key]: value }));
   }
 
-  function handleAdd() {
-    onAdd(card);
-    setCard(createBlankUpgradeCard());
+  function handleSave() {
+    onSave(card);
+    if (!isEditing) {
+      setCard(createBlankUpgradeCard());
+    }
   }
 
   return (
@@ -96,9 +101,16 @@ export function UpgradeCardEditor({ upgradeSlotLibrary, onAdd }: UpgradeCardEdit
           </label>
         </section>
 
-        <button type="button" className="add-item-button" onClick={handleAdd} disabled={!card.name}>
-          Add Upgrade Card to Gallery
-        </button>
+        <div className="editor-actions">
+          <button type="button" className="add-item-button" onClick={handleSave} disabled={!card.name}>
+            {isEditing ? 'Save Changes' : 'Add Upgrade Card to Gallery'}
+          </button>
+          {isEditing && onCancel && (
+            <button type="button" className="cancel-item-button" onClick={onCancel}>
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="card-editor__preview">

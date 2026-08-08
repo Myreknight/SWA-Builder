@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { KeywordLibraryEditor } from './components/KeywordLibraryEditor';
 import { ShipBase } from './components/ShipBase';
 import { ShipCard } from './components/ShipCard';
@@ -46,6 +46,17 @@ function App() {
   const [printQueueShips, setPrintQueueShips] = useState<ShipCardData[]>([]);
   const [printQueueSquadrons, setPrintQueueSquadrons] = useState<SquadronCardData[]>([]);
   const [printQueueUpgradeCards, setPrintQueueUpgradeCards] = useState<UpgradeCardData[]>([]);
+  const [editingShipId, setEditingShipId] = useState<string | null>(null);
+  const [editingSquadronId, setEditingSquadronId] = useState<string | null>(null);
+  const [editingUpgradeCardId, setEditingUpgradeCardId] = useState<string | null>(null);
+
+  const shipEditorSectionRef = useRef<HTMLElement>(null);
+  const squadronEditorSectionRef = useRef<HTMLElement>(null);
+  const upgradeCardEditorSectionRef = useRef<HTMLElement>(null);
+
+  const editingShip = customShips.find((s) => s.id === editingShipId);
+  const editingSquadron = customSquadrons.find((s) => s.id === editingSquadronId);
+  const editingUpgradeCard = customUpgradeCards.find((c) => c.id === editingUpgradeCardId);
 
   useEffect(() => {
     saveCustomShips(customShips);
@@ -76,6 +87,21 @@ function App() {
   function removeCustomShip(id: string) {
     setCustomShips((prev) => prev.filter((s) => s.id !== id));
     setPrintQueueShips((prev) => prev.filter((s) => s.id !== id));
+    setEditingShipId((prev) => (prev === id ? null : prev));
+  }
+
+  function handleSaveShip(ship: ShipCardData) {
+    if (editingShipId) {
+      setCustomShips((prev) => prev.map((s) => (s.id === ship.id ? ship : s)));
+      setEditingShipId(null);
+    } else {
+      setCustomShips((prev) => [...prev, ship]);
+    }
+  }
+
+  function handleEditShip(id: string) {
+    setEditingShipId(id);
+    shipEditorSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function toggleSquadronPrint(squadron: SquadronCardData) {
@@ -87,6 +113,21 @@ function App() {
   function removeCustomSquadron(id: string) {
     setCustomSquadrons((prev) => prev.filter((s) => s.id !== id));
     setPrintQueueSquadrons((prev) => prev.filter((s) => s.id !== id));
+    setEditingSquadronId((prev) => (prev === id ? null : prev));
+  }
+
+  function handleSaveSquadron(squadron: SquadronCardData) {
+    if (editingSquadronId) {
+      setCustomSquadrons((prev) => prev.map((s) => (s.id === squadron.id ? squadron : s)));
+      setEditingSquadronId(null);
+    } else {
+      setCustomSquadrons((prev) => [...prev, squadron]);
+    }
+  }
+
+  function handleEditSquadron(id: string) {
+    setEditingSquadronId(id);
+    squadronEditorSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function toggleUpgradeCardPrint(card: UpgradeCardData) {
@@ -98,6 +139,21 @@ function App() {
   function removeCustomUpgradeCard(id: string) {
     setCustomUpgradeCards((prev) => prev.filter((c) => c.id !== id));
     setPrintQueueUpgradeCards((prev) => prev.filter((c) => c.id !== id));
+    setEditingUpgradeCardId((prev) => (prev === id ? null : prev));
+  }
+
+  function handleSaveUpgradeCard(card: UpgradeCardData) {
+    if (editingUpgradeCardId) {
+      setCustomUpgradeCards((prev) => prev.map((c) => (c.id === card.id ? card : c)));
+      setEditingUpgradeCardId(null);
+    } else {
+      setCustomUpgradeCards((prev) => [...prev, card]);
+    }
+  }
+
+  function handleEditUpgradeCard(id: string) {
+    setEditingUpgradeCardId(id);
+    upgradeCardEditorSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function addKeyword(keyword: KeywordDefinition) {
@@ -206,9 +262,15 @@ function App() {
       </nav>
 
       <div className={`tab-panel${activeTab === 'ships' ? '' : ' tab-panel--hidden'}`}>
-        <section className="app__section no-print">
-          <h2>Build a Ship</h2>
-          <ShipEditor upgradeSlotLibrary={upgradeSlots} onAdd={(ship) => setCustomShips((prev) => [...prev, ship])} />
+        <section className="app__section no-print" ref={shipEditorSectionRef}>
+          <h2>{editingShipId ? 'Edit Ship' : 'Build a Ship'}</h2>
+          <ShipEditor
+            key={editingShipId ?? 'new-ship'}
+            upgradeSlotLibrary={upgradeSlots}
+            initialShip={editingShip}
+            onSave={handleSaveShip}
+            onCancel={() => setEditingShipId(null)}
+          />
         </section>
 
         {customShips.length > 0 && (
@@ -222,6 +284,7 @@ function App() {
                   upgradeSlotLibrary={upgradeSlots}
                   inQueue={printQueueShips.some((s) => s.id === ship.id)}
                   onTogglePrint={() => toggleShipPrint(ship)}
+                  onEdit={() => handleEditShip(ship.id)}
                   onRemove={() => removeCustomShip(ship.id)}
                 />
               ))}
@@ -258,11 +321,14 @@ function App() {
       </div>
 
       <div className={`tab-panel${activeTab === 'upgradeCards' ? '' : ' tab-panel--hidden'}`}>
-        <section className="app__section no-print">
-          <h2>Build an Upgrade Card</h2>
+        <section className="app__section no-print" ref={upgradeCardEditorSectionRef}>
+          <h2>{editingUpgradeCardId ? 'Edit Upgrade Card' : 'Build an Upgrade Card'}</h2>
           <UpgradeCardEditor
+            key={editingUpgradeCardId ?? 'new-upgrade-card'}
             upgradeSlotLibrary={upgradeSlots}
-            onAdd={(card) => setCustomUpgradeCards((prev) => [...prev, card])}
+            initialCard={editingUpgradeCard}
+            onSave={handleSaveUpgradeCard}
+            onCancel={() => setEditingUpgradeCardId(null)}
           />
         </section>
 
@@ -277,6 +343,7 @@ function App() {
                   upgradeSlotLibrary={upgradeSlots}
                   inQueue={printQueueUpgradeCards.some((c) => c.id === card.id)}
                   onTogglePrint={() => toggleUpgradeCardPrint(card)}
+                  onEdit={() => handleEditUpgradeCard(card.id)}
                   onRemove={() => removeCustomUpgradeCard(card.id)}
                 />
               ))}
@@ -301,11 +368,14 @@ function App() {
       </div>
 
       <div className={`tab-panel${activeTab === 'squadrons' ? '' : ' tab-panel--hidden'}`}>
-        <section className="app__section no-print">
-          <h2>Build a Squadron</h2>
+        <section className="app__section no-print" ref={squadronEditorSectionRef}>
+          <h2>{editingSquadronId ? 'Edit Squadron' : 'Build a Squadron'}</h2>
           <SquadronEditor
+            key={editingSquadronId ?? 'new-squadron'}
             keywordLibrary={keywords}
-            onAdd={(squadron) => setCustomSquadrons((prev) => [...prev, squadron])}
+            initialSquadron={editingSquadron}
+            onSave={handleSaveSquadron}
+            onCancel={() => setEditingSquadronId(null)}
           />
         </section>
 
@@ -320,6 +390,7 @@ function App() {
                   keywords={keywords}
                   inQueue={printQueueSquadrons.some((s) => s.id === squadron.id)}
                   onTogglePrint={() => toggleSquadronPrint(squadron)}
+                  onEdit={() => handleEditSquadron(squadron.id)}
                   onRemove={() => removeCustomSquadron(squadron.id)}
                 />
               ))}
