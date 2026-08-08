@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { AntiSquadronArmament, DiceCount, ShipCardData, ShipSize } from '../types/ship';
-import { DICE_ORDER, DIE_LETTER } from '../utils/dice';
-import '../styles/dice.css';
+import { DiceDiamonds } from './DiceDiamonds';
 import './ShipBase.css';
 
 // Real-world base footprint in mm. Huge ships have no defined base yet.
@@ -76,32 +75,14 @@ export function ShipBase({ ship }: ShipBaseProps) {
 }
 
 function ArmamentBadge({ dice }: { dice: DiceCount }) {
-  const entries = DICE_ORDER.map((color) => [color, dice[color]] as const).filter(([, count]) => count > 0);
-
-  if (entries.length === 0) {
-    return <span className="ship-base__none">&mdash;</span>;
-  }
-
-  return (
-    <div className="ship-base__dice">
-      {entries.map(([color, count]) => (
-        <span key={color} className={`die die--${color}`}>
-          {DIE_LETTER[color]}
-          {count}
-        </span>
-      ))}
-    </div>
-  );
+  return <DiceDiamonds dice={dice} />;
 }
 
 function AntiSquadronBadge({ armament }: { armament: AntiSquadronArmament }) {
   return (
     <div className="ship-base__anti-squad">
       <span className="ship-base__anti-squad-label">AS</span>
-      <span className={`die die--${armament.color}`}>
-        {DIE_LETTER[armament.color]}
-        {armament.count}
-      </span>
+      <DiceDiamonds dice={{ [armament.color]: armament.count }} />
     </div>
   );
 }

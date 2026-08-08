@@ -62,6 +62,7 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  max-width: 40%;
 }
 
 .ship-base__zone--front {
@@ -86,16 +87,6 @@
   top: 50%;
   right: 10%;
   transform: translateY(-50%);
-}
-
-.ship-base__dice {
-  display: flex;
-  gap: 2px;
-}
-
-.ship-base__none {
-  font-size: 7px;
-  opacity: 0.4;
 }
 
 .ship-base__anti-squad {
