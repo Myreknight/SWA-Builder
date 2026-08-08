@@ -65,12 +65,10 @@ export function ShipCard({ ship, upgradeSlotLibrary }: ShipCardProps) {
       <div className="ship-card__body">
         <div className="ship-card__left">
           <ShieldDiagram shields={ship.shields} hull={ship.hull} />
-          <ArmamentTable armament={ship.armament} />
+          <ArmamentTable armament={ship.armament} antiSquadron={ship.antiSquadronArmament} />
         </div>
 
         <div className="ship-card__right">
-          <AntiSquadronStat armament={ship.antiSquadronArmament} />
-
           <div className="ship-card__tokens">
             <DefenseTokenChips defenseTokens={ship.defenseTokens} />
           </div>
@@ -122,21 +120,24 @@ function SpeedChart({ speeds }: { speeds: SpeedSetting[] }) {
   );
 }
 
-function AntiSquadronStat({ armament }: { armament: AntiSquadronArmament }) {
-  return (
-    <div className="stat">
-      <DiceDiamonds dice={{ [armament.color]: armament.count }} className="stat__die" />
-      <span className="stat__label">Anti-Squad</span>
-    </div>
-  );
-}
-
-function ArmamentTable({ armament }: { armament: Record<Facing, DiceCount> }) {
+function ArmamentTable({
+  armament,
+  antiSquadron,
+}: {
+  armament: Record<Facing, DiceCount>;
+  antiSquadron: AntiSquadronArmament;
+}) {
   return (
     <div className="armament-table">
       {FACING_ORDER.map((facing) => (
         <ArmamentRow key={facing} label={FACING_LABEL[facing]} dice={armament[facing]} />
       ))}
+      <div className="armament-row armament-row--anti-squad">
+        <span className="armament-row__label">Anti-Squad</span>
+        <span className="armament-row__dice">
+          <DiceDiamonds dice={{ [antiSquadron.color]: antiSquadron.count }} />
+        </span>
+      </div>
     </div>
   );
 }

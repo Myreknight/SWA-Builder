@@ -130,12 +130,19 @@
   font-size: 8px;
 }
 
+.armament-row--anti-squad {
+  margin-top: 2px;
+  padding-top: 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .armament-row__label {
   text-transform: uppercase;
   letter-spacing: 0.3px;
   opacity: 0.7;
-  width: 30px;
+  min-width: 30px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .armament-row__dice {
@@ -205,8 +212,8 @@
 }
 
 .ship-card__tokens {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 4px;
 }
 
