@@ -4,7 +4,7 @@
 }
 
 .ship-card__body,
-.ship-card__speed,
+.speed-chart,
 .ship-card__tokens,
 .ship-card__upgrades {
   position: relative;
